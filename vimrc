@@ -46,7 +46,9 @@ filetype plugin indent on    " required
 "set background=dark " set background
 set background=dark
 colorscheme solarized
+
 syntax enable    " syntax on
+set mouse=a      " turn on mouse
 
 set shortmess+=I " no splash
 set nocompatible " vim only, no vi

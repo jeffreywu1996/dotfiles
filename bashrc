@@ -9,9 +9,15 @@ export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-cor
 # Use macvim
 alias vim='mvim '
 
+# Colors
+solar=gxfxbEaEBxxEhEhBaDaCaD
+linux=gxBxhxDxfxhxhxhxhxcxcx
+export CLICOLOR=1
+export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+
 # Alias for short commands
 alias hs="history | grep "  # Automatically filter your bash history
-alias l='ls -G'  # Colorized listing
+alias l='ls'  # Colorized listing
 alias ls='ls -G' # ls color
 alias la='ls -a'  # List all files
 alias ld='ls -F | grep /$' # List directories
@@ -37,7 +43,9 @@ alias cs12='ssh ${username12}@ieng6.ucsd.edu'
 username30=cs30ffl
 alias cs30='ssh ${username30}@ieng6.ucsd.edu'
 
-alias sshpi='ssh pi@spispis-30ffl.local'
+username30pi=pi@spispis-30ffl.local
+routeripaddress=pi@192.168.0.14
+alias sshpi='ssh -X pi@jeffreywu.duckdns.org'
 
 # Lazy java compile
 alias j='java '
