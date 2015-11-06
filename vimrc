@@ -1,17 +1,35 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Maintainer:
+"       Jeffrey Wu
+" Sections:
+"       -> Vundle Plugin
+"       -> Themes
+"       -> General
+"       -> Text, tabs
+"       -> Visual
+"       -> Highlight
+"       -> Vim interface
+"       -> Files
+"       -> Moving around
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vundle Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 " Solarized Theme
@@ -30,25 +48,38 @@ Plugin 'kien/ctrlp.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-"let g:solarized_termcolors=256
-"set background=dark " set background
-set background=dark
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Themes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SOLARIZED
+
+set background=dark     " dark background
+"set background=light    " light background
 colorscheme solarized
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Sets how many lines of history VIM has to remember
+set history=500
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
 syntax enable    " syntax on
-set mouse=a      " turn on mouse
+set mouse=a      " enable use of mouse
 
 set shortmess+=I " no splash
 set nocompatible " vim only, no vi
@@ -64,23 +95,82 @@ set showmatch    " highlight matching parens
 " highlight 80 chars overflow, red bar down the 80th col
 set colorcolumn=80
 
-" autoindent!!
-"set cindent 
-set ai " auto indent
-set si " smart indent
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
 set expandtab
+
+" Be smart when using tabs ;)
 set smarttab
 
-" uncomment & experiment for personal tab preferences
-set tabstop=4
-"set tw=4
-"set softtabstop=4
-"set expandtab   " tabs to spaces
+" 1 tab == 4 spaces
 set shiftwidth=4
+set tabstop=4
 
-set hidden
-set linebreak
-set wrap
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+"set hidden
+"set linebreak
+
+
+""""""""""""""""""""""""""""""
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> # :call VisualSelection('b', '')<CR>
+
+
+""""""""""""""""""""""""""""""
+" => Highlight
+""""""""""""""""""""""""""""""
+" Ignore case when searching
+set ignorecase
+" When searching try to be smart about cases 
+set smartcase
+" Highlight search results
+set hlsearch
+" Makes search act like search in modern browsers
+set incsearch 
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+" For regular expressions turn magic on
+set magic
+" Show matching brackets when text indicator is over them
+set showmatch 
+:nmap \q :nohlsearch<CR>
+
+
+"""""""""""""""""""""""""""""
+" VIM user interface
+"""""""""""""""""""""""""""""
+set wildmenu
+set cmdheight=2
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Add a bit extra margin to the left
+set foldcolumn=1
+
+""""""""""""""""""""""""""""
+" Files, backup
+"""""""""""""""""""""""""""
+" Turn off backup
+set noswapfile
 
 " default is unix, never crlf
 set fileformats=unix,dos
@@ -91,31 +181,15 @@ set noeb vb t_vb=
 " Intuitive backspacing in insert mode
 set backspace=indent,eol,start
 
-" Highlight search terms...
-:set incsearch
-:set ignorecase
-:set smartcase
-:set hlsearch
-:set incsearch
-:nmap \q :nohlsearch<CR>
-
-"""""""""""""""""""""""""""""
-" VIM user interface
-"""""""""""""""""""""""""""""
-set wildmenu
-set cmdheight=2
-""""""""""""""""""""""""""""
-" Files, backup
-"""""""""""""""""""""""""""
-" Turn off backup
-set noswapfile
-
 """"""""""""""""""""""""""""
 " Moving around
 """"""""""""""""""""""""""""
 " Treat long lines as break lines
 map j gj
 map k gk
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j

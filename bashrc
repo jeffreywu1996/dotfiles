@@ -1,7 +1,6 @@
 # bash file
 
 # Java Classpath for JUnit
-
 export JUNIT_HOME="$HOME/java"
 export PATH="/usr/local/bin:$PATH:$JUNIT_HOME"
 export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-core-1.3.jar"
@@ -34,17 +33,10 @@ alias mv='mv -i'
 alias cp='cp -i'
 
 # Make logging into your account a breeze:
-username15=cs15sahk  # Store username as a variable
-alias cs15='ssh -X ${username15}@ieng6.ucsd.edu'
-
-username12=cs12sig
-alias cs12='ssh ${username12}@ieng6.ucsd.edu'
-
 username30=cs30ffl
 alias cs30='ssh ${username30}@ieng6.ucsd.edu'
 
 username30pi=pi@spispis-30ffl.local
-routeripaddress=pi@192.168.0.14
 alias sshpi='ssh -X pi@jeffreywu.duckdns.org'
 
 # Lazy java compile
@@ -87,10 +79,3 @@ alias hidefile='defaults write com.apple.finder AppleShowAllFiles NO; killall Fi
 # Search package
 alias searchpackage='pkgutil --pkgs | grep'
 alias searchextension='kextstat | grep'
-
-# Brew Cask
-alias gimp='open ~/Applications/"GIMP.app"'
-alias chrome='open ~/Applications/"Google Chrome.app"'
-alias vlc='open ~/Applications/"VLC.app"'
-alias firefox='open ~/Applications/"Firefox.app"'
-alias bt='open ~/Applications/"Transmission.app"'
