@@ -192,10 +192,10 @@ map k gk
 map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-"map <C-j> <C-W>j
-"map <C-k> <C-W>k
-"map <C-h> <C-W>h
-"map <C-l> <C-W>l
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
@@ -216,11 +216,11 @@ nnoremap E $
 inoremap jj <esc>
 
 " move around screen
-map <leader>h <C-W>h
-map <leader>j <C-W>h
-map <leader>k <C-W>k
-map <leader>l <C-W>l
-map <leader>r <C-W>r
+nnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
+nnoremap <leader>l <C-W>l
+nnoremap <leader>h <C-W>h
+nnoremap <leader>r <C-W>r
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
