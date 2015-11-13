@@ -72,8 +72,8 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+" let mapleader = ","
+" let g:mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -192,10 +192,10 @@ map k gk
 map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-h> <C-W>h
+"map <C-l> <C-W>l
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
@@ -214,3 +214,13 @@ nnoremap E $
 
 " jj is escape
 inoremap jj <esc>
+
+" move around screen
+map <leader>h <C-W>h
+map <leader>j <C-W>h
+map <leader>k <C-W>k
+map <leader>l <C-W>l
+map <leader>r <C-W>r
+
+" NERDTree toggle
+map <leader>nt :NERDTreeToggle<CR>

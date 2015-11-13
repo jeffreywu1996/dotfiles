@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "backing up vimrc, bashrc"
+echo "into this folder"
+cd ..
+cp .vimrc setup/
+cp .bashrc setup/
+cd setup/
+
+if diff .vimrc vimrc >/dev/null ; then
+    echo "no changes in vimrc"
+else
+    echo "vimrc updated with new changes"
+fi
+
+if diff .bashrc bashrc >/dev/null ; then
+    echo "no changes in bashrc"
+else
+    echo "bashrc updated with new changes"
+fi
+
+mv .vimrc vimrc
+mv .bashrc bashrc
+
+echo "backup complete"
