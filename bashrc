@@ -6,7 +6,7 @@ export PATH="/usr/local/bin:$PATH:$JUNIT_HOME"
 export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-core-1.3.jar"
 
 # Use macvim
-alias vim='mvim '
+#alias vim='mvim '
 
 # Colors
 solar=gxfxbEaEBxxEhEhBaDaCaD
