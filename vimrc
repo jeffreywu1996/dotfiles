@@ -29,7 +29,6 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 " Solarized Theme
@@ -44,6 +43,10 @@ Plugin 'bling/vim-airline'
 Plugin 'Valloric/YouCompleteMe'
 " Ctrlp
 Plugin 'kien/ctrlp.vim'
+" Vim Airline themes
+Plugin 'vim-airline/vim-airline-themes'
+" Syntastic
+" Plugin 'scrooloose/syntastic'
 " Color Schemes
 Bundle "daylerees/colour-schemes", { "rtp": "vim/" }
 
@@ -56,13 +59,26 @@ filetype plugin indent on    " required
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SOLARIZED
-set background=dark     " dark background
+" let g:solarized_termcolors=256
+"set background=dark     " dark background
 "set background=light    " light background
-colorscheme solarized
-
+"colorscheme solarized
+colorscheme Tomorrow-Night
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" open .vimrc
+nnoremap <leader>v :tabnew ~/.vimrc<CR>
+
+" page up and page downs
+nnoremap <leader>o <C-D>
+nnoremap <leader>p <C-U>
+
+" copy to system clipboard
+nnoremap <leader>i "+
+
+" clipboard
+set clipboard=unnamed
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -95,7 +111,6 @@ set showmatch    " highlight matching parens
 " highlight 80 chars overflow, red bar down the 80th col
 set colorcolumn=80
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,6 +135,10 @@ set wrap "Wrap lines
 "set hidden
 "set linebreak
 
+" set font size
+if has('gui_running')
+  set guifont=Menlo:h13
+endif
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -224,3 +243,15 @@ nnoremap <leader>r <C-W>r
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
+
+" Syntastic
+"let g:syntastic_auto_loc_list=1
+"let g:syntastic_disabled_filetypes=['html']
+"let g:syntastic_enable_signs=1
+"let g:syntastic_check_on_open=1
+"let g:syntastic_enable_signs=1
+
+" Airline fix
+set laststatus=2
+set ttimeoutlen=50
+

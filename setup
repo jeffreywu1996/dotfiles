@@ -1,6 +1,7 @@
 #!/bin/bash
+echo "Seting up vimrc bashrc on this machine"
 
-echo "copying vimrc"
+echo "copying  vimrc"
 cp vimrc .vimrc
 mv .vimrc ~/
 

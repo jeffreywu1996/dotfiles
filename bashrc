@@ -4,6 +4,8 @@
 export JUNIT_HOME="$HOME/java"
 export PATH="/usr/local/bin:$PATH:$JUNIT_HOME"
 export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-core-1.3.jar"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
 # Use macvim
 #alias vim='mvim '
@@ -38,6 +40,9 @@ alias cs30='ssh ${username30}@ieng6.ucsd.edu'
 
 username30pi=pi@spispis-30ffl.local
 alias sshpi='ssh -X pi@jeffreywu.duckdns.org'
+
+alias cs100='ssh cs100wdq@ieng6.ucsd.edu'
+alias cs100x='ssh -X cs100wdq@ieng6.ucsd.edu'
 
 # Lazy java compile
 alias j='java '
@@ -79,3 +84,6 @@ alias hidefile='defaults write com.apple.finder AppleShowAllFiles NO; killall Fi
 # Search package
 alias searchpackage='pkgutil --pkgs | grep'
 alias searchextension='kextstat | grep'
+
+# brew updates
+alias update='brew update && brew upgrade'

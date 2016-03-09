@@ -11,15 +11,16 @@ if diff .vimrc vimrc >/dev/null ; then
     echo "no changes in vimrc"
 else
     echo "vimrc updated with new changes"
+    mv vimrc vimrcOLD
+    mv .vimrc vimrc
 fi
 
 if diff .bashrc bashrc >/dev/null ; then
     echo "no changes in bashrc"
 else
     echo "bashrc updated with new changes"
+    mv bashrc bashrcOLD
+    mv .bashrc bashrc
 fi
-
-mv .vimrc vimrc
-mv .bashrc bashrc
 
 echo "backup complete"
