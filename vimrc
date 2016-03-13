@@ -91,6 +91,9 @@ set autoread
 " let mapleader = ","
 " let g:mapleader = ","
 
+" Fast undo
+nnoremap <leader>z :u<cr>
+
 " Fast saving
 nmap <leader>w :w!<cr>
 
@@ -255,3 +258,6 @@ map <leader>nt :NERDTreeToggle<CR>
 set laststatus=2
 set ttimeoutlen=50
 
+" You complete me
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/ycm_extra_conf.py'
+autocmd CompleteDone * pclose

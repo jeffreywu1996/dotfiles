@@ -42,7 +42,7 @@ username30pi=pi@spispis-30ffl.local
 alias sshpi='ssh -X pi@jeffreywu.duckdns.org'
 
 alias cs100='ssh cs100wdq@ieng6.ucsd.edu'
-alias cs100x='ssh -X cs100wdq@ieng6.ucsd.edu'
+alias cs100x='ssh -X cs100wdq@ieng6-252.ucsd.edu'
 
 # Lazy java compile
 alias j='java '
