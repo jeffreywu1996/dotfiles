@@ -1,10 +1,29 @@
 #!/bin/bash
-echo "Seting up vimrc bashrc on this machine"
 
-echo "copying  vimrc"
-cp vimrc .vimrc
-mv .vimrc ~/
+# Set up
+echo "Setting up vimrc and bashrc on this machine..."
 
-echo "copying bashrc"
-cp bashrc .bashrc
-mv .bashrc ~/
+# Ask if want to backup vimrc and bashrc
+read -p "Do you want to keep system's old vimrc and bashrc? " yn
+    case $yn in
+        [Yy]* )
+            echo "Backing up system's old vimrc and bashrc to vimrcOLD and bashrcOLD";
+            cp ~/.vimrc ./vimrcOLD;
+            cp ~/.bashrc ./bashrcOLD;
+            break;;
+        * ) 
+            echo "Not backing up system's old vimrc and bashrc";
+            echo "Overwritting system's vimrc and bashrc...";;
+    esac
+
+echo -e "\nSetting up..."
+
+# Setting up vimrc
+echo "Copying vimrc..."
+cp vimrc ~/.vimrc
+
+# Setting up bashrc
+echo "Copying bashrc..."
+cp bashrc ~/.bashrc
+
+echo -e "\nDone setting up, Ending script."

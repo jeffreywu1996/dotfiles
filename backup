@@ -1,26 +1,42 @@
 #!/bin/bash
 
-echo "backing up vimrc, bashrc"
-echo "into this folder"
-cd ..
-cp .vimrc setup/
-cp .bashrc setup/
-cd setup/
+echo "Backing up system .vimrc and .bashrc into setup folder..."
 
-if diff .vimrc vimrc >/dev/null ; then
-    echo "no changes in vimrc"
+# Check if vimrc is updated
+echo -e "\nDiffering vimrc..."
+if diff ../.vimrc vimrc >/dev/null ; then
+    echo "no changes in vimrc, no backup needed"
 else
-    echo "vimrc updated with new changes"
-    mv vimrc vimrcOLD
-    mv .vimrc vimrc
+    # Ask to backup
+    echo "There are new changes to .vimrc"
+    read -p "Do you want to backup vimrc? " yn
+    case $yn in
+        [Yy]* )
+            echo -e "\nbacking up vimrc...";
+            echo "copying vimrc";
+            cp ../.vimrc vimrc;
+            break;;
+        * )
+            echo -e "\nNot backing up .vimrc.";;
+esac
 fi
 
-if diff .bashrc bashrc >/dev/null ; then
-    echo "no changes in bashrc"
+# Check if bashrc is updated
+echo -e "\nDiffering bashrc..."
+if diff ../.bashrc bashrc >/dev/null ; then
+    echo "no changes in bashrc, no backup needed"
 else
-    echo "bashrc updated with new changes"
-    mv bashrc bashrcOLD
-    mv .bashrc bashrc
+    echo "There are new changes to .bashrc"
+    read -p "Do you want to backup bashrc? " yn
+    case $yn in
+        [Yy]* )
+            echo -e "\nbacking up bashrc...";
+            echo "copying bashrc";
+            cp ../.bashrc bashrc;
+            break;;
+        * )
+            echo -e "\nNot backup up .bashrc.";;
+esac
 fi
 
-echo "backup complete"
+echo -e "\nending script."
