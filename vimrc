@@ -46,9 +46,23 @@ Plugin 'kien/ctrlp.vim'
 " Vim Airline themes
 Plugin 'vim-airline/vim-airline-themes'
 " Syntastic
-" Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
+" gitgutter
+Plugin 'airblade/vim-gitgutter'
 " Color Schemes
 Bundle "daylerees/colour-schemes", { "rtp": "vim/" }
+" Indent guide
+Plugin 'nathanaelkane/vim-indent-guides'
+" Color Picker
+Plugin 'KabbAmine/vCoolor.vim'
+" Tern
+Bundle "marijnh/tern_for_vim"
+" Javascript syntax
+Plugin 'jelera/vim-javascript-syntax'
+" More syntax
+Plugin 'pangloss/vim-javascript'
+" JSX
+Plugin 'mxw/vim-jsx'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -61,9 +75,10 @@ filetype plugin indent on    " required
 " SOLARIZED
 " let g:solarized_termcolors=256
 "set background=dark     " dark background
-"set background=light    " light background
+set background=light    " light background
 "colorscheme solarized
-colorscheme Tomorrow-Night
+"colorscheme Tomorrow-Night
+colorscheme Tomorrow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -71,13 +86,13 @@ colorscheme Tomorrow-Night
 nnoremap <leader>v :tabnew ~/.vimrc<CR>
 
 " page up and page downs
-nnoremap <leader>o <C-D>
-nnoremap <leader>p <C-U>
+nnoremap <leader>0 <C-D>
+nnoremap <leader>9 <C-U>
 
 " copy to system clipboard
 nnoremap <leader>i "+
 
-" clipboard
+" fix copy paste to clipboard
 set clipboard=unnamed
 
 " Sets how many lines of history VIM has to remember
@@ -188,6 +203,10 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Make vertical splits thinner
+hi VertSplit ctermbg=NONE guibg=NONE
+set fillchars+=vert:│
+
 """"""""""""""""""""""""""""
 " Files, backup
 """""""""""""""""""""""""""
@@ -248,16 +267,38 @@ nnoremap <leader>r <C-W>r
 map <leader>nt :NERDTreeToggle<CR>
 
 " Syntastic
-"let g:syntastic_auto_loc_list=1
-"let g:syntastic_disabled_filetypes=['html']
-"let g:syntastic_enable_signs=1
-"let g:syntastic_check_on_open=1
-"let g:syntastic_enable_signs=1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_auto_loc_list = 0
+"let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+"let g:syntastic_error_symbol = '❌'
+"let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+"let g:syntastic_style_warning_symbol = '💩'
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
 
 " Airline fix
 set laststatus=2
 set ttimeoutlen=50
 
-" You complete me
+" YouCompleteMe
 let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/ycm_extra_conf.py'
 autocmd CompleteDone * pclose
+
+" Color
+"let g:indent_guides_auto_colors = 0
+hi IndentGuidesEven  ctermbg=grey
+
+" JSX in js files
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files

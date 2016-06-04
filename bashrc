@@ -1,4 +1,11 @@
 # bash file
+# mongo
+export MONGO_PATH=/usr/local/mongodb
+export PATH=$PATH:$MONGO_PATH/bin
+
+# React Android_home
+export ANDROID_HOME=/Users/jeffreywu/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 # Java Classpath for JUnit
 export JUNIT_HOME="$HOME/java"
@@ -87,3 +94,6 @@ alias searchextension='kextstat | grep'
 
 # brew updates
 alias update='brew update && brew upgrade'
+
+export NVM_DIR="/Users/jeffreywu/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
