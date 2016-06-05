@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer:
 "       Jeffrey Wu
@@ -15,57 +15,31 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+syntax enable
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'gmarik/vundle'
+Plug 'tpope/vim-fugitive'
+Plug 'altercation/vim-colors-solarized'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'bling/vim-airline'
+Plug 'Valloric/YouCompleteMe'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/syntastic'
+Plug 'airblade/vim-gitgutter'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'KabbAmine/vCoolor.vim'
+Plug 'marijnh/tern_for_vim'
+Plug 'mxw/vim-jsx'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" Solarized Theme
-Plugin 'altercation/vim-colors-solarized'
-" NERD Commenter
-Plugin 'scrooloose/nerdcommenter'
-" NERD Tree
-Plugin 'scrooloose/nerdtree'
-" Vim Airline
-Plugin 'bling/vim-airline'
-" You Complete Me
-Plugin 'Valloric/YouCompleteMe'
-" Ctrlp
-Plugin 'kien/ctrlp.vim'
-" Vim Airline themes
-Plugin 'vim-airline/vim-airline-themes'
-" Syntastic
-Plugin 'scrooloose/syntastic'
-" gitgutter
-Plugin 'airblade/vim-gitgutter'
-" Color Schemes
-Bundle "daylerees/colour-schemes", { "rtp": "vim/" }
-" Indent guide
-Plugin 'nathanaelkane/vim-indent-guides'
-" Color Picker
-Plugin 'KabbAmine/vCoolor.vim'
-" Tern
-Bundle "marijnh/tern_for_vim"
-" Javascript syntax
-Plugin 'jelera/vim-javascript-syntax'
-" More syntax
-Plugin 'pangloss/vim-javascript'
-" JSX
-Plugin 'mxw/vim-jsx'
+call plug#end()
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
 filetype plugin indent on    " required
 
 
@@ -83,14 +57,12 @@ colorscheme Tomorrow
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " open .vimrc
-nnoremap <leader>v :tabnew ~/.vimrc<CR>
+nnoremap <silent> <leader>v :tabnew $MYVIMRC<CR>
+nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
 
 " page up and page downs
 nnoremap <leader>0 <C-D>
 nnoremap <leader>9 <C-U>
-
-" copy to system clipboard
-nnoremap <leader>i "+
 
 " fix copy paste to clipboard
 set clipboard=unnamed
@@ -101,16 +73,17 @@ set history=500
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
+" Mapping leader to ,
 " let mapleader = ","
 " let g:mapleader = ","
 
-" Fast undo
+" Fast undo/redo
 nnoremap <leader>z :u<cr>
+nnoremap <leader>Z <C-R>
 
-" Fast saving
+" Fast saving/close
 nmap <leader>w :w!<cr>
+nmap <leader>q :q<cr>
 
 syntax enable    " syntax on
 set mouse=a      " enable use of mouse
@@ -184,8 +157,7 @@ set lazyredraw
 set magic
 " Show matching brackets when text indicator is over them
 set showmatch 
-:nmap \q :nohlsearch<CR>
-
+nnoremap <CR> :nohlsearch<cr>
 
 """""""""""""""""""""""""""""
 " VIM user interface
@@ -263,6 +235,17 @@ nnoremap <leader>l <C-W>l
 nnoremap <leader>h <C-W>h
 nnoremap <leader>r <C-W>r
 
+""""""""""""""""""""""""""""
+" Unorganized
+""""""""""""""""""""""""""""
+nnoremap <leader>b          :CtrlPBuffer<CR>
+nnoremap <leader>d          :NERDTreeToggle<CR>
+nnoremap <leader>f          :NERDTreeFind<CR>
+nnoremap <leader>t          :CtrlP<CR>
+nnoremap <leader>T          :CtrlPClearCache<CR>:CtrlP<CR>
+nnoremap <leader>]          :TagbarToggle<CR>
+nnoremap <leader>g          :GitGutterToggle<CR>
+
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
 
@@ -293,7 +276,7 @@ set laststatus=2
 set ttimeoutlen=50
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/setup/ycm_extra_conf.py'
 autocmd CompleteDone * pclose
 
 " Color
@@ -302,3 +285,6 @@ hi IndentGuidesEven  ctermbg=grey
 
 " JSX in js files
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+" Gitgutter
+let g:gitgutter_enabled = 0
