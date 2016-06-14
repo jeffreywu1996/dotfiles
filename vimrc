@@ -37,6 +37,8 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'KabbAmine/vCoolor.vim'
 Plug 'marijnh/tern_for_vim'
 Plug 'mxw/vim-jsx'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 
 call plug#end()
 
