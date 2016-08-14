@@ -23,7 +23,7 @@ syntax enable
 call plug#begin('~/.vim/plugged')
 
 Plug 'gmarik/vundle'
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -34,16 +34,19 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'KabbAmine/vCoolor.vim'
-Plug 'marijnh/tern_for_vim'
-Plug 'mxw/vim-jsx'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
+"Plug 'KabbAmine/vCoolor.vim'
+"Plug 'marijnh/tern_for_vim'
+"Plug 'mxw/vim-jsx'
+"Plug 'jelera/vim-javascript-syntax'
+"Plug 'pangloss/vim-javascript'
+Plug 'majutsushi/tagbar'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'easymotion/vim-easymotion'
+Plug 'terryma/vim-multiple-cursors/'
 
 call plug#end()
 
 filetype plugin indent on    " required
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Themes
@@ -53,8 +56,8 @@ filetype plugin indent on    " required
 "set background=dark     " dark background
 set background=light    " light background
 "colorscheme solarized
-"colorscheme Tomorrow-Night
-colorscheme Tomorrow
+colorscheme Tomorrow-Night
+"colorscheme Tomorrow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -86,6 +89,7 @@ nnoremap <leader>Z <C-R>
 " Fast saving/close
 nmap <leader>w :w!<cr>
 nmap <leader>q :q<cr>
+nmap <leader>wq :wq<cr>
 
 syntax enable    " syntax on
 set mouse=a      " enable use of mouse
@@ -147,18 +151,18 @@ vnoremap <silent> # :call VisualSelection('b', '')<CR>
 """"""""""""""""""""""""""""""
 " Ignore case when searching
 set ignorecase
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 " Highlight search results
 set hlsearch
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 " For regular expressions turn magic on
 set magic
 " Show matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 nnoremap <CR> :nohlsearch<cr>
 
 """""""""""""""""""""""""""""
@@ -280,6 +284,7 @@ set ttimeoutlen=50
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf='~/setup/ycm_extra_conf.py'
 autocmd CompleteDone * pclose
+let g:ycm_python_binary_path = '/usr/local/bin/python' " python completion
 
 " Color
 "let g:indent_guides_auto_colors = 0
@@ -290,3 +295,11 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Gitgutter
 let g:gitgutter_enabled = 0
+
+" showfunction
+map <leader>m :TagbarToggle<CR>
+
+" White space
+map <leader>l :ToggleWhitespace<CR>
+map <leader>ll :StripWhitespace<CR>
+let g:better_whitespace_enabled = 0

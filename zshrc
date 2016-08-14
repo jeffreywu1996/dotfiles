@@ -8,7 +8,7 @@ export ZSH=/Users/jeffreywu/.oh-my-zsh
 #ZSH_THEME=pygmalion
 #ZSH_THEME=robbyrussell
 #ZSH_THEME=gitster
-ZSH_THEME=minimal
+ZSH_THEME=minimalcustom
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -52,7 +52,8 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man colorize github jira vagrant virtualenv pip python brew osx zsh-syntax-highlighting)
+# removed jira and vagrant
+plugins=(git colored-man colorize github virtualenv pip python brew osx zsh-syntax-highlighting)
 
 # User configuration
 
