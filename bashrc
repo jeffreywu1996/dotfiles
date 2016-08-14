@@ -2,7 +2,17 @@
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:$PATH
 
-# Mongo
+# Python
+# Virtual Env
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper_lazy.sh
+# pip should only run if there is a virutalenv activated
+export PIP_REQUIRE_VIRTUALENV=true
+gpip(){
+   PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+
+#Mongo
 export MONGO_PATH=/usr/local/mongodb
 export PATH=$PATH:$MONGO_PATH/bin
 

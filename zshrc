@@ -63,7 +63,7 @@ export PATH="/Users/jeffreywu/.nvm/v0.10.45/bin:/Users/jeffreywu/.rbenv/shims:/U
 source $ZSH/oh-my-zsh.sh
 
 # Add env.sh
-source ~/setup/env.sh
+source ~/setup/bashrc
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

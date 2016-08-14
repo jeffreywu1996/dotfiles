@@ -302,4 +302,4 @@ map <leader>m :TagbarToggle<CR>
 " White space
 map <leader>l :ToggleWhitespace<CR>
 map <leader>ll :StripWhitespace<CR>
-let g:better_whitespace_enabled = 0
+let g:strip_whitespace_on_save = 1
