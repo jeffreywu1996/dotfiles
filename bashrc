@@ -1,8 +1,9 @@
 # bash file
 # Ensure user-installed binaries take precedence
-export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Python
+#export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
 # Virtual Env
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper_lazy.sh
@@ -17,15 +18,18 @@ export MONGO_PATH=/usr/local/mongodb
 export PATH=$PATH:$MONGO_PATH/bin
 
 # React Android_home
-export ANDROID_HOME=/Users/jeffreywu/Library/Android/sdk
+#export ANDROID_HOME=/Users/jeffreywu/Library/Android/sdk
+export ANDROID_HOME=/usr/local/opt/android-sdk
+#export ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 # Java Classpath for JUnit
-export JUNIT_HOME="$HOME/java"
-export PATH="/usr/local/bin:$PATH:$JUNIT_HOME"
-export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-core-1.3.jar"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+export JAVA_HOME="$(/usr/libexec/java_home)"
+#export JUNIT_HOME="$HOME/java"
+#export PATH="/usr/local/bin:$PATH:$JUNIT_HOME"
+#export CLASSPATH="$CLASSPATH:$JUNIT_HOME/junit-4.12.jar:$JUNIT_HOME/hamcrest-core-1.3.jar"
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
 
 # Use macvim
 #alias vim='mvim '

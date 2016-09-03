@@ -89,4 +89,4 @@ source ~/setup/bashrc
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-. <(azure --completion)
+#. <(azure --completion)

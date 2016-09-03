@@ -34,11 +34,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
-"Plug 'KabbAmine/vCoolor.vim'
-"Plug 'marijnh/tern_for_vim'
-"Plug 'mxw/vim-jsx'
-"Plug 'jelera/vim-javascript-syntax'
-"Plug 'pangloss/vim-javascript'
+Plug 'KabbAmine/vCoolor.vim'
+Plug 'marijnh/tern_for_vim'
+Plug 'mxw/vim-jsx'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 Plug 'majutsushi/tagbar'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'easymotion/vim-easymotion'
@@ -277,6 +277,10 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
+" Turn off checking for html files. Too many weird errors
+let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
+
 " Airline fix
 set laststatus=2
 set ttimeoutlen=50
@@ -303,3 +307,10 @@ map <leader>m :TagbarToggle<CR>
 map <leader>l :ToggleWhitespace<CR>
 map <leader>ll :StripWhitespace<CR>
 let g:strip_whitespace_on_save = 1
+
+" Yapf
+map <leader>kk :call yapf#YAPF()<cr>
+
+" Multiple cursor
+let g:multi_cursor_prev_key='<C-m>'
+let g:multi_cursor_skip_key='<C-b>'
