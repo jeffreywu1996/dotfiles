@@ -22,28 +22,14 @@ syntax enable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'gmarik/vundle'
 Plug 'tpope/vim-fugitive'
 Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
-Plug 'Valloric/YouCompleteMe'
-Plug 'kien/ctrlp.vim'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
-Plug 'airblade/vim-gitgutter'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'KabbAmine/vCoolor.vim'
-Plug 'marijnh/tern_for_vim'
-Plug 'mxw/vim-jsx'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
 Plug 'majutsushi/tagbar'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'easymotion/vim-easymotion'
-Plug 'terryma/vim-multiple-cursors'
-"Plug 'klen/python-mode'
 
 call plug#end()
 

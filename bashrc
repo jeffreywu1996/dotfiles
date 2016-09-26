@@ -82,3 +82,11 @@ export NVM_DIR="/Users/jeffreywu/.nvm"
 
 alias whichenv='echo $VIRTUAL_ENV'
 alias timeout='gtimeout'
+
+alias cqlstart='launchctl start homebrew.mxcl.cassandra'
+alias cqlstop='launchctl stop homebrew.mxcl.cassandra'
+
+
+
+
+alias cs105='ssh cs105fef@ieng6.ucsd.edu'
