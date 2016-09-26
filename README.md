@@ -3,6 +3,27 @@
 This includes basic setup files for vim and zsh (or bash).
 
 
+##Script to setup on MacOS
+
+```
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/install_mac.sh -O -)"
+```
+
+This script auto installs homebrew and homebrew vim along with the plugins for vim.
+A full usable vim should be ready once the script is done running.
+
+##Script for simple vimrc setup
+
+```
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/setup_simple_vimrc.sh -O -)"
+```
+
+##Script for minimal vimrc setup
+
+```
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/setup_minimal_vimrc.sh -O -)"
+```
+
 ##Setting up on a new machine
 
 ####Setup bashrc on MacOS
