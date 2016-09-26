@@ -1,0 +1,106 @@
+" MINIMAL VIMRC
+
+" Maintainer:
+"       Jeffrey Wu
+
+
+syntax enable
+filetype plugin indent on
+
+" Colors
+set t_Co=256
+set background=light
+
+" Fast undo/redo
+nnoremap <leader>z :u<cr>
+nnoremap <leader>Z <C-R>
+
+" Fast saving/close
+nmap <leader>w :w!<cr>
+nmap <leader>q :q<cr>
+nmap <leader>wq :wq<cr>
+
+set autoread
+set mouse=a
+set clipboard=unnamed
+set history=500
+set colorcolumn=80
+
+set shortmess+=I
+set nocompatible
+set title
+set modeline
+
+set number
+set ruler
+set showcmd
+set showmatch
+
+" Tabs
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set lbr
+set tw=500
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+
+" Highlight
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set lazyredraw
+set magic
+set showmatch
+nnoremap <CR> :nohlsearch<cr>
+
+" Interface
+set wildmenu
+set cmdheight=2
+set mat=2
+
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+set foldcolumn=1
+hi VertSplit ctermbg=NONE guibg=NONE
+
+" No Backup
+set noswapfile
+set fileformats=unix,dos
+set noeb vb t_vb=
+set backspace=indent,eol,start
+
+" Arrow keys
+map j gj
+map k gk
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+map <leader>bd :Bclose<cr>
+map <leader>ba :1,1000 bd!<cr>
+
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+
+nnoremap B ^
+nnoremap E $
+
+inoremap jj <esc>
+
+nnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
+nnoremap <leader>l <C-W>l
+nnoremap <leader>h <C-W>h
+nnoremap <leader>r <C-W>r

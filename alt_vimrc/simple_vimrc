@@ -1,17 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SIMPLE VIMRC
+
 " Maintainer:
 "       Jeffrey Wu
-" Sections:
-"       -> Vundle Plugin
-"       -> Themes
-"       -> General
-"       -> Text, tabs
-"       -> Visual
-"       -> Highlight
-"       -> Vim interface
-"       -> Files
-"       -> Moving around
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -26,7 +18,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'ntpeters/vim-better-whitespace'
@@ -35,39 +26,13 @@ call plug#end()
 
 filetype plugin indent on    " required
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-"set background=dark     " dark background
-set background=light    " light background
-
-" SOLARIZED
-"let g:solarized_termcolors=256
-"colorscheme solarized
-
-"colorscheme Tomorrow-Night
+set background=light
 colorscheme Tomorrow
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Buffer Reads
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Python file types
-"au BufNewFile,BufRead *.py
-    "\ set tabstop=4
-    "\ set softtabstop=4
-    "\ set shiftwidth=4
-    "\ set textwidth=79
-    "\ set expandtab
-    "\ set autoindent
-    "\ set fileformat=unix
-
-" Javascript file types
-"au BufNewFile,BufRead *.js, *.html, *.css
-    "\ set tabstop=2
-    "\ set softtabstop=2
-    "\ set shiftwidth=2
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -85,10 +50,6 @@ set history=500
 
 " Set to auto read when a file is changed from the outside
 set autoread
-
-" Mapping leader to ,
-" let mapleader = ","
-" let g:mapleader = ","
 
 " Fast undo/redo
 nnoremap <leader>z :u<cr>
@@ -111,7 +72,6 @@ set number       " linum
 set ruler		 " shows char and line number
 set showcmd      " show command info in minibuffer
 set showmatch    " highlight matching parens
-" set lisp         " lisp mode (conflicts with cindent)
 
 " highlight 80 chars overflow, red bar down the 80th col
 set colorcolumn=80
@@ -138,9 +98,6 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
-"set hidden
-"set linebreak
-
 " set font size
 if has('gui_running')
   set guifont=Menlo:h13
@@ -159,19 +116,12 @@ vnoremap <silent> # :call VisualSelection('b', '')<CR>
 """"""""""""""""""""""""""""""
 " => Highlight
 """"""""""""""""""""""""""""""
-" Ignore case when searching
 set ignorecase
-" When searching try to be smart about cases
 set smartcase
-" Highlight search results
 set hlsearch
-" Makes search act like search in modern browsers
 set incsearch
-" Don't redraw while executing macros (good performance config)
 set lazyredraw
-" For regular expressions turn magic on
 set magic
-" Show matching brackets when text indicator is over them
 set showmatch
 nnoremap <CR> :nohlsearch<cr>
 
@@ -183,71 +133,51 @@ set wildmenu
 set cmdheight=2
 set mat=2
 
-" No annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
 
-" Add a bit extra margin to the left
 set foldcolumn=1
 
 " Make vertical splits thinner
 hi VertSplit ctermbg=NONE guibg=NONE
-set fillchars+=vert:│
-
 
 """"""""""""""""""""""""""""
 " Files, backup
 """""""""""""""""""""""""""
-" Turn off backup
 set noswapfile
-
-" default is unix, never crlf
 set fileformats=unix,dos
-
-" don't beep
 set noeb vb t_vb=
-
-" Intuitive backspacing in insert mode
 set backspace=indent,eol,start
 
 
 """"""""""""""""""""""""""""
 " Moving around
 """"""""""""""""""""""""""""
-" Treat long lines as break lines
 map j gj
 map k gk
 
-" Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
-" Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Close the current buffer
 map <leader>bd :Bclose<cr>
-" Close all the buffers
 map <leader>ba :1,1000 bd!<cr>
 
-" Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
-" move to beginning/end of line
 nnoremap B ^
 nnoremap E $
 
-" jj is escape
 inoremap jj <esc>
 
-" move around screen
 nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>l <C-W>l
@@ -261,27 +191,14 @@ nnoremap <leader>r <C-W>r
 " Python Folding
 set foldmethod=indent
 set nofoldenable
-" python with virtualenv support
-"py << EOF
-"import os
-"import sys
-"if 'VIRTUAL_ENV' in os.environ:
-  "project_base_dir = os.environ['VIRTUAL_ENV']
-  "activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  "execfile(activate_this, dict(__file__=activate_this))
-"EOF
 
 
 """"""""""""""""""""""""""""
 " Unorganized
 """"""""""""""""""""""""""""
-nnoremap <leader>b          :CtrlPBuffer<CR>
 nnoremap <leader>d          :NERDTreeToggle<CR>
 nnoremap <leader>f          :NERDTreeFind<CR>
-nnoremap <leader>t          :CtrlP<CR>
-nnoremap <leader>T          :CtrlPClearCache<CR>:CtrlP<CR>
 nnoremap <leader>]          :TagbarToggle<CR>
-nnoremap <leader>g          :GitGutterToggle<CR>
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
@@ -294,44 +211,12 @@ set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_loc_list_height = 5
 let g:syntastic_auto_loc_list = 0
-"let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
-let g:syntastic_javascript_checkers = ['eslint']
-
-"let g:syntastic_error_symbol = '❌'
-"let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
-"let g:syntastic_style_warning_symbol = '💩'
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
-
-" Turn off checking for html files. Too many weird errors
-let syntastic_mode_map = { 'passive_filetypes': ['html'] }
-let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
-
-" Airline fix
-set laststatus=2
-set ttimeoutlen=50
-let g:airline_powerline_fonts=1
-
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf='~/setup/ycm_extra_conf.py'
-autocmd CompleteDone * pclose
-let g:ycm_python_binary_path = '/usr/local/bin/python' " python completion
-
-" Indent guides color
-map <leader>, :IndentGuidesToggle<CR>
-"let g:indent_guides_auto_colors = 0
-hi IndentGuidesEven  ctermbg=grey
-
-" JSX in js files
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-
-" Gitgutter
-let g:gitgutter_enabled = 0
 
 " showfunction
 map <leader>m :TagbarToggle<CR>
@@ -340,10 +225,3 @@ map <leader>m :TagbarToggle<CR>
 map <leader>l :ToggleWhitespace<CR>
 map <leader>ll :StripWhitespace<CR>
 let g:strip_whitespace_on_save = 1
-
-" Yapf
-map <leader>kk :call yapf#YAPF()<cr>
-
-" Multiple cursor
-let g:multi_cursor_prev_key='<C-m>'
-let g:multi_cursor_skip_key='<C-b>'

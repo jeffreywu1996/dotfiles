@@ -332,7 +332,7 @@ set ttimeoutlen=50
 let g:airline_powerline_fonts=1
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf='~/setup/ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/setup/ycm/ycm_extra_conf.py'
 autocmd CompleteDone * pclose
 let g:ycm_python_binary_path = '/usr/local/bin/python' " python completion
 
