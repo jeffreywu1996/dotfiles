@@ -23,6 +23,12 @@ sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_v
 ```
 sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_minimal_vim.sh -O -)"
 ```
+##Script for adding aliases to bash
+
+```
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_bash.sh -O -)"
+```
+
 
 ##Setting up on a new machine
 

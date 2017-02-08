@@ -52,8 +52,9 @@ alias lla='ls -la' # Long list of files
 alias cdd='cd ~/Desktop' # Goes to Desktop
 alias cdown='cd ~/Downloads' # Goes to Downloads
 alias cs='cd ~/cs' # Goes to cs
-alias cdrive='cd ~/Google\ Drive' # Goes to Google Drive
-alias cdocs='cd ~/Google\ Drive/Documents' # Goes to Documents
+alias cdrive='cd /Volumes/Transcend/Google\ Drive' # Goes to Google Drive
+alias cdocs='cd /Volumes/Transcend/Google\ Drive/Documents' # Goes to Documents
+alias trans='cd /Volumes/Transcend'
 
 alias mv='mv -i'
 alias cp='cp -i'
@@ -70,10 +71,6 @@ alias ...='cd ../..'
 alias showfile='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hidefile='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 
-# Search package
-#alias searchpackage='pkgutil --pkgs | grep'
-#alias searchextension='kextstat | grep'
-
 # brew updates
 alias update='brew update && brew upgrade'
 
@@ -85,8 +82,3 @@ alias timeout='gtimeout'
 
 alias cqlstart='launchctl start homebrew.mxcl.cassandra'
 alias cqlstop='launchctl stop homebrew.mxcl.cassandra'
-
-
-
-
-alias cs105='ssh cs105fef@ieng6.ucsd.edu'

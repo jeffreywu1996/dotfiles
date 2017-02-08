@@ -1,0 +1,20 @@
+########################
+### EXTRA BASH ALIAS ###
+########################
+
+# Alias for short commands
+alias l='ls'  # Colorized listing
+alias ls='ls -G' # ls color
+alias la='ls -a'  # List all files
+alias ld='ls -F | grep /$' # List directories
+alias ll='ls -l' # Long list of files
+alias lla='ls -la' # Long list of files
+
+alias mv='mv -i'
+alias cp='cp -i'
+
+# Directory navigation aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+
+### END ###

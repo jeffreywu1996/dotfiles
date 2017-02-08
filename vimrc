@@ -53,15 +53,15 @@ filetype plugin indent on    " required
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-"set background=dark     " dark background
-set background=light    " light background
+set background=dark     " dark background
+"set background=light    " light background
 
 " SOLARIZED
 "let g:solarized_termcolors=256
 "colorscheme solarized
 
-"colorscheme Tomorrow-Night
-colorscheme Tomorrow
+colorscheme Tomorrow-Night
+"colorscheme Tomorrow
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -141,8 +141,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -154,11 +154,6 @@ set wrap "Wrap lines
 
 "set hidden
 "set linebreak
-
-" set font size
-if has('gui_running')
-  set guifont=Menlo:h13
-endif
 
 
 """"""""""""""""""""""""""""""
