@@ -15,13 +15,13 @@ A full usable vim should be ready once the script is done running.
 ##Script for simple vimrc setup
 
 ```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_simple_vimrc.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_simple_vim.sh -O -)"
 ```
 
 ##Script for minimal vimrc setup
 
 ```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_minimal_vimrc.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_minimal_vim.sh -O -)"
 ```
 
 ##Setting up on a new machine
