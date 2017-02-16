@@ -227,3 +227,8 @@ map <leader>m :TagbarToggle<CR>
 map <leader>l :ToggleWhitespace<CR>
 map <leader>ll :StripWhitespace<CR>
 let g:strip_whitespace_on_save = 1
+
+" Airline fix
+set laststatus=2
+set ttimeoutlen=50
+let g:airline_powerline_fonts=1
