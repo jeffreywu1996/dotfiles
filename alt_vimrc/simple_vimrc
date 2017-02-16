@@ -14,12 +14,11 @@ syntax enable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-fugitive'
-Plug 'altercation/vim-colors-solarized'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
-Plug 'majutsushi/tagbar'
 Plug 'ntpeters/vim-better-whitespace'
 
 call plug#end()
@@ -31,13 +30,16 @@ filetype plugin indent on    " required
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-set background=light
-colorscheme Tomorrow
+set background=dark
+colorscheme Tomorrow-Night
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set encoding
+set encoding=utf-8
+
 " open .vimrc
 nnoremap <silent> <leader>v :tabnew $MYVIMRC<CR>
 nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>

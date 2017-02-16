@@ -15,13 +15,13 @@ fi
 
 echo "Installing vim plug"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-vim +PlugInstall
+vim +PlugInstall +qall
 
 echo "Cloning vimrc repo"
 cd ~/
 git clone https://github.com/jeffreywu1996/setup.git
 ln -sf ~/setup/alt_vimrc/simple_vimrc ~/.vimrc
-vim +PlugInstall
+vim +PlugInstall +qall
 
 echo "Copying Tomorrow theme colors"
 mkdir -p ~/.vim/colors
