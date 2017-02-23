@@ -2,6 +2,8 @@
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
+#export TERM=xterm-256color
+
 # Python
 #export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
 # Virtual Env

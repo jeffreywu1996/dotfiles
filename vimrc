@@ -325,6 +325,10 @@ let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
 set laststatus=2
 set ttimeoutlen=50
 let g:airline_powerline_fonts=1
+let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_left_alt_sep= ''
+let g:airline_left_sep = ''
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf='~/setup/ycm/ycm_extra_conf.py'
@@ -356,3 +360,12 @@ map <leader>kk :call yapf#YAPF()<cr>
 " Multiple cursor
 let g:multi_cursor_prev_key='<C-m>'
 let g:multi_cursor_skip_key='<C-b>'
+
+" Haskell Highlight stuff
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1
