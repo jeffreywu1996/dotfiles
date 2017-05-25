@@ -35,6 +35,7 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 
 # Use macvim
 #alias vim='mvim '
+#alias octave='octave-cli'
 
 # Colors
 #solar=gxfxbEaEBxxEhEhBaDaCaD

@@ -141,8 +141,16 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
+
+" Javascript use 2 space tabs
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2
+autocmd FileType haskell setlocal shiftwidth=2 tabstop=2
+
+autocmd filetype crontab setlocal nobackup nowritebackup
 
 " Linebreak on 500 characters
 set lbr
