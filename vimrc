@@ -44,6 +44,7 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'klen/python-mode'
+Plug 'kristijanhusak/vim-hybrid-material'
 
 call plug#end()
 
@@ -61,6 +62,7 @@ set background=dark     " dark background
 "colorscheme solarized
 
 colorscheme Tomorrow-Night
+"colorscheme base16-material-dark
 "colorscheme Tomorrow
 
 
@@ -78,10 +80,10 @@ colorscheme Tomorrow-Night
     "\ set fileformat=unix
 
 " Javascript file types
-"au BufNewFile,BufRead *.js, *.html, *.css
-    "\ set tabstop=2
-    "\ set softtabstop=2
-    "\ set shiftwidth=2
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -330,6 +332,7 @@ let syntastic_mode_map = { 'passive_filetypes': ['html'] }
 let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
 
 " Airline fix
+"let g:airline_theme = "hybrid"
 set laststatus=2
 set ttimeoutlen=50
 let g:airline_powerline_fonts=1
@@ -377,3 +380,7 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1
+
+
+" print options
+set printoptions=number:y

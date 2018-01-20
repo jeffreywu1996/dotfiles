@@ -1,19 +1,21 @@
 # bash file
 # Ensure user-installed binaries take precedence
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 #export TERM=xterm-256color
 
 # Python
 #export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
 # Virtual Env
 export WORKON_HOME=$HOME/.virtualenvs
+#export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+#export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 source /usr/local/bin/virtualenvwrapper_lazy.sh
 # pip should only run if there is a virutalenv activated
-export PIP_REQUIRE_VIRTUALENV=true
-gpip(){
-   PIP_REQUIRE_VIRTUALENV="" pip "$@"
-}
+#export PIP_REQUIRE_VIRTUALENV=true
+#gpip(){
+   #PIP_REQUIRE_VIRTUALENV="" pip "$@"
+#}
 
 #Mongo
 export MONGO_PATH=/usr/local/mongodb
