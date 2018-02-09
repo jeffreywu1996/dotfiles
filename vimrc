@@ -23,28 +23,30 @@ syntax enable
 call plug#begin('~/.vim/plugged')
 
 Plug 'gmarik/vundle'
-Plug 'tpope/vim-fugitive'
-Plug 'altercation/vim-colors-solarized'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+"Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'Valloric/YouCompleteMe'
-Plug 'kien/ctrlp.vim'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/syntastic'
-Plug 'airblade/vim-gitgutter'
+Plug 'w0rp/ale'
+"Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'KabbAmine/vCoolor.vim'
-Plug 'marijnh/tern_for_vim'
-Plug 'mxw/vim-jsx'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
+"Plug 'KabbAmine/vCoolor.vim'
+"Plug 'marijnh/tern_for_vim'
+"Plug 'mxw/vim-jsx'
+"Plug 'jelera/vim-javascript-syntax'
+"Plug 'pangloss/vim-javascript'
 Plug 'majutsushi/tagbar'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'easymotion/vim-easymotion'
+"Plug 'easymotion/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
-"Plug 'klen/python-mode'
-Plug 'kristijanhusak/vim-hybrid-material'
+"Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'neovimhaskell/haskell-vim'
 
 call plug#end()
 
@@ -54,6 +56,7 @@ filetype plugin indent on    " required
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
+"set termguicolors
 set background=dark     " dark background
 "set background=light    " light background
 
@@ -92,6 +95,12 @@ au BufNewFile,BufRead *.js, *.html, *.css
 " open .vimrc
 nnoremap <silent> <leader>v :tabnew $MYVIMRC<CR>
 nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
+
+" Set cursor line
+set cursorline
+
+" Set encoding for fonts
+set encoding=utf-8
 
 " fix copy paste to clipboard
 set clipboard=unnamed
@@ -199,7 +208,7 @@ nnoremap <CR> :nohlsearch<cr>
 " VIM user interface
 """""""""""""""""""""""""""""
 set wildmenu
-set cmdheight=2
+set cmdheight=1
 set mat=2
 
 " No annoying sound on errors
@@ -296,50 +305,30 @@ set nofoldenable
 """"""""""""""""""""""""""""
 nnoremap <leader>b          :CtrlPBuffer<CR>
 nnoremap <leader>d          :NERDTreeToggle<CR>
-nnoremap <leader>f          :NERDTreeFind<CR>
-nnoremap <leader>t          :CtrlP<CR>
-nnoremap <leader>T          :CtrlPClearCache<CR>:CtrlP<CR>
+nnoremap <leader>f          :Ag<CR>
+nnoremap <leader>t          :FZF<CR>
+" nnoremap <Leader>a          :Ack!<Space>
+nnoremap <leader>cc         :Commentary<CR>
 nnoremap <leader>]          :TagbarToggle<CR>
 nnoremap <leader>g          :GitGutterToggle<CR>
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
 
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 0
-"let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_javascript_checkers = ['eslint']
-
-"let g:syntastic_error_symbol = '❌'
-"let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
-"let g:syntastic_style_warning_symbol = '💩'
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
-
-" Turn off checking for html files. Too many weird errors
-let syntastic_mode_map = { 'passive_filetypes': ['html'] }
-let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
-
 " Airline fix
 "let g:airline_theme = "hybrid"
+set linespace=0
 set laststatus=2
 set ttimeoutlen=50
 let g:airline_powerline_fonts=1
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_left_alt_sep= ''
-let g:airline_left_sep = ''
+
+"let g:airline_left_sep = ''      " Cannot fix airline arrow, so remove
+"let g:airline_left_sep = ''
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf='~/setup/ycm/ycm_extra_conf.py'
@@ -347,7 +336,7 @@ autocmd CompleteDone * pclose
 let g:ycm_python_binary_path = '/usr/local/bin/python' " python completion
 
 " Indent guides color
-map <leader>, :IndentGuidesToggle<CR>
+map <leader>i :IndentGuidesToggle<CR>
 "let g:indent_guides_auto_colors = 0
 hi IndentGuidesEven  ctermbg=grey
 
@@ -381,6 +370,14 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1
 
+" ALE linter
+" Disable linter on save
+let g:ale_lint_on_save = 0
+" Disable linter on vim startup
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+" Airline linter
+let g:airline#extensions#ale#enabled = 1
 
 " print options
 set printoptions=number:y
