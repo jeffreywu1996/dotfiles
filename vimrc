@@ -22,7 +22,6 @@ syntax enable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'gmarik/vundle'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 "Plug 'altercation/vim-colors-solarized'
@@ -31,7 +30,7 @@ Plug 'bling/vim-airline'
 Plug 'Valloric/YouCompleteMe'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 "Plug 'airblade/vim-gitgutter'
@@ -123,6 +122,8 @@ nnoremap <leader>Z <C-R>
 nmap <leader>w :w!<cr>
 nmap <leader>q :q<cr>
 nmap <leader>wq :wq<cr>
+
+nnoremap Y y$
 
 syntax enable    " syntax on
 set mouse=a      " enable use of mouse
