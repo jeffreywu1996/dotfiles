@@ -14,12 +14,16 @@ syntax enable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/nerdcommenter'
+Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'terryma/vim-multiple-cursors'
+
+Plug 'w0rp/ale'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -132,7 +136,7 @@ nnoremap <CR> :nohlsearch<cr>
 " VIM user interface
 """""""""""""""""""""""""""""
 set wildmenu
-set cmdheight=2
+set cmdheight=1
 set mat=2
 
 set noerrorbells
@@ -199,26 +203,11 @@ set nofoldenable
 " Unorganized
 """"""""""""""""""""""""""""
 nnoremap <leader>d          :NERDTreeToggle<CR>
-nnoremap <leader>f          :NERDTreeFind<CR>
-nnoremap <leader>]          :TagbarToggle<CR>
+nnoremap <leader>f          :Ag<CR>
+nnoremap <leader>t          :FZF<CR>
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
-
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_wq = 1
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
 
 " showfunction
 map <leader>m :TagbarToggle<CR>
@@ -232,3 +221,16 @@ let g:strip_whitespace_on_save = 1
 set laststatus=2
 set ttimeoutlen=50
 let g:airline_powerline_fonts=1
+
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ }
+
+" ALE linter
+" Disable linter on save
+let g:ale_lint_on_save = 0
+" Disable linter on vim startup
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+" Airline linter
+let g:airline#extensions#ale#enabled = 1
