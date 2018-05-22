@@ -2,33 +2,11 @@
 
 This includes basic setup files for vim and zsh (or bash).
 
+## Directions
 
-## Script to setup on MacOS
+Run script `install_simple_vimrc.sh` to install a simple usable version of vimrc to make vim usable.
 
-```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/install_mac.sh -O -)"
-```
-
-This script auto installs homebrew and homebrew vim along with the plugins for vim.
-A full usable vim should be ready once the script is done running.
-
-## Script for simple vimrc setup
-
-```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_simple_vim.sh -O -)"
-```
-
-## Script for minimal vimrc setup
-
-```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_minimal_vim.sh -O -)"
-```
-## Script for adding aliases to bash
-
-```
-sh -c "$(wget https://raw.githubusercontent.com/jeffreywu1996/setup/master/alt_vimrc/setup_bash.sh -O -)"
-```
-
+(Not updated) Run script `install_mac.sh` to install a full version of vimrc.
 
 ## Setting up on a new machine
 
