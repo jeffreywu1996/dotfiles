@@ -7,9 +7,6 @@ if [ ! -f ~/.bashrc ]; then
   exit 1
 fi
 
-
-cd ~/
-git clone https://github.com/jeffreywu1996/setup.git
-cat ~/setup/alt_vimrc/bash_alias >> ~/.bashrc
+cat bash_alias >> ~/.bashrc
 
 echo "Done."
