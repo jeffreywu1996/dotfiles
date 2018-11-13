@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BASE=$(pwd)
+
+# vimrc
+mv -v ~/.vimrc ~/.vimrc.old 2> /dev/null
+ln -sf $BASE/alt_vimrc/minimal_vimrc ~/.vimrc

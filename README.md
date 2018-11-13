@@ -1,4 +1,20 @@
-# Setup Files
+# Dotfiles
+
+My dotfiles.
+
+## Setup
+1. Simple vimrc - Setup vim on new comp
+```
+./install-vim
+```
+
+2. Minimal vimrc - Get a minimally usable vim without plugins
+```
+./install-minimal
+```
+
+
+# Setup Files (OLD)
 
 This includes basic setup files for vim and zsh (or bash).
 
