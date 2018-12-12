@@ -63,9 +63,6 @@ set novisualbell
 set t_vb=
 set tm=500
 
-set foldcolumn=1
-hi VertSplit ctermbg=NONE guibg=NONE
-
 " No Backup
 set noswapfile
 set fileformats=unix,dos
