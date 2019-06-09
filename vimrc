@@ -47,9 +47,15 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_Co=256
+" set t_Co=256
+let g:solarized_termcolors=256
 set background=dark
 colorscheme Tomorrow-Night
+
+" disable Background Color Erase on windows ubuntu subsystem
+if &term =~ '256color'
+    set t_ut=
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
