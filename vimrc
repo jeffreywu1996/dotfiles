@@ -26,9 +26,9 @@ Plug 'chriskempson/vim-tomorrow-theme'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 " Lint
@@ -231,5 +231,9 @@ let g:airline#extensions#ale#enabled = 1
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay=50
+let g:python3_host_prog = '/usr/bin/python3.6'  "Setting python 3.6
+let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
+let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
