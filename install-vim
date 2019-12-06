@@ -6,8 +6,15 @@ export GIT_SSL_NO_VERIFY=true
 mkdir -p ~/.vim/autoload
 curl --insecure -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim
 
+# Git
+git config --global user.name "Jeffrey Wu"
+git config --global user.email "jeffrey.wu@gmail.com"
+
 # vimrc
 mv -v ~/.vimrc ~/.vimrc.old 2> /dev/null
 ln -sf $BASE/vimrc ~/.vimrc
+
+# tmux
+ln -sf $BASE/.tmux.conf ~/.tmux.conf
 
 vim -u ~/.vimrc.old +PlugInstall +qall
