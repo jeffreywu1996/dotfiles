@@ -14,4 +14,4 @@ vim -u ~/.vimrc.old +PlugInstall +qall
 
 # tmux
 mv -v ~/.tmux.conf ~/.tmux.conf.old 2> /dev/null
-ln -sf $BASE/.tmux.conf ~/.tmux.conf
+ln -sf $BASE/tmux.conf ~/.tmux.conf
