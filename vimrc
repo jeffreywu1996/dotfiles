@@ -17,7 +17,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'chriskempson/vim-tomorrow-theme'
@@ -250,3 +251,6 @@ let g:jedi#completions_enabled = 0
 
 " open the go-to function in split, not another buffer
 let g:jedi#use_splits_not_buffers = "right"
+
+" set default comment string to be #
+set commentstring=#\ %s
