@@ -19,11 +19,16 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'davidhalter/jedi-vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'posva/vim-vue'
+Plug 'jiangmiao/auto-pairs'
 
 " AutoComplete
 " if has('nvim')
@@ -72,7 +77,7 @@ nnoremap <silent> <leader>v :tabnew ~/.vimrc<CR>
 nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
 
 " fix copy paste to clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -130,6 +135,9 @@ if has('gui_running')
   set guifont=Menlo:h13
 endif
 
+autocmd FileType html setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType vue setlocal ts=2 sts=2 sw=2
 
 """"""""""""""""""""""""""""""
 " => Highlight
@@ -238,10 +246,10 @@ let g:airline#extensions#ale#enabled = 1
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay=50
+" let g:deoplete#auto_complete_delay=50
 let g:python3_host_prog = '/usr/bin/python3.6'  "Setting python 3.6
-let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
-let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
+" let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
+" let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
@@ -263,3 +271,11 @@ let g:coc_global_extensions = [
   \ ]
 
 
+" disable autocompletion, cause we use deoplete for completion
+let g:jedi#completions_enabled = 0
+
+" open the go-to function in split, not another buffer
+let g:jedi#use_splits_not_buffers = "right"
+
+" set default comment string to be #
+set commentstring=#\ %s
