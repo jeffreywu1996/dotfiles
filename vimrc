@@ -14,6 +14,8 @@ syntax enable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
@@ -21,15 +23,16 @@ Plug 'tpope/vim-commentary'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 
 " AutoComplete
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
 " Lint
 Plug 'w0rp/ale'
@@ -65,7 +68,7 @@ endif
 set encoding=utf-8
 
 " open .vimrc
-nnoremap <silent> <leader>v :tabnew $MYVIMRC<CR>
+nnoremap <silent> <leader>v :tabnew ~/.vimrc<CR>
 nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
 
 " fix copy paste to clipboard
@@ -87,7 +90,11 @@ nmap <leader>q :q<cr>
 nmap <leader>wq :wq<cr>
 
 syntax enable    " syntax on
-set mouse=a      " enable use of mouse
+set mouse+=a      " enable use of mouse
+if !has('nvim')
+  set ttymouse=xterm2
+endif
+
 
 set shortmess+=I " no splash
 set nocompatible " vim only, no vi
@@ -108,8 +115,8 @@ set colorcolumn=80
 set expandtab
 set smarttab
 
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 set lbr
 set tw=500
@@ -237,3 +244,22 @@ let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
 let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Tmux
+if &term =~ '^screen'
+  " tmux knows the extended mouse mode
+  set ttymouse=xterm2
+endif
+
+" coc config
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-python',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
+  \ ]
+
+
