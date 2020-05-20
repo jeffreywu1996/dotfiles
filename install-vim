@@ -14,7 +14,7 @@ git config --global user.email "jeffreywu1996@gmail.com"
 [ -f ~/.vimrc ] && mv -v ~/.vimrc ~/.vimrc.old 2> /dev/null
 ln -sf $BASE/vimrc ~/.vimrc
 
-vim -u ~/.vimrc.old +PlugInstall +qall
+vim +PlugInstall +qall
 
 # tmux
 mv -v ~/.tmux.conf ~/.tmux.conf.old 2> /dev/null

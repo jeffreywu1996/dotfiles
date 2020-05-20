@@ -23,21 +23,11 @@ Plug 'tpope/vim-surround'
 Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'davidhalter/jedi-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'posva/vim-vue'
 Plug 'jiangmiao/auto-pairs'
-
-" AutoComplete
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
 
 " Lint
 Plug 'w0rp/ale'
@@ -46,6 +36,7 @@ Plug 'junegunn/fzf.vim'
 
 " Color Themes
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 
@@ -55,10 +46,11 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set t_Co=256
-let g:solarized_termcolors=256
+set t_Co=256
+" let g:solarized_termcolors=256
 set background=dark
-colorscheme Tomorrow-Night
+colorscheme solarized
+" colorscheme Tomorrow-Night
 
 " disable Background Color Erase on windows ubuntu subsystem
 if &term =~ '256color'
@@ -77,7 +69,11 @@ nnoremap <silent> <leader>v :tabnew ~/.vimrc<CR>
 nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
 
 " fix copy paste to clipboard
-set clipboard=unnamedplus
+if system('uname -s') == "Darwin\n"
+  set clipboard=unnamed "OSX
+else
+  set clipboard=unnamedplus "Linux
+endif
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -203,7 +199,7 @@ nnoremap <leader>j <C-W>j
 nnoremap <leader>k <C-W>k
 nnoremap <leader>l <C-W>l
 nnoremap <leader>h <C-W>h
-nnoremap <leader>r <C-W>r
+nnoremap <leader>rr <C-W>r
 
 
 """"""""""""""""""""""""""""
@@ -235,7 +231,7 @@ set ttimeoutlen=50
 let g:airline_powerline_fonts=1
 
 let g:lightline = {
-      \ 'colorscheme': 'seoul256',
+      \ 'colorscheme': 'solarized',
       \ }
 
 " ALE linter
@@ -245,13 +241,13 @@ let g:ale_lint_on_enter = 0
 let g:airline#extensions#ale#enabled = 1
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 " let g:deoplete#auto_complete_delay=50
-let g:python3_host_prog = '/usr/bin/python3.6'  "Setting python 3.6
+" let g:python3_host_prog = '/usr/bin/python3.6'  "Setting python 3.6
 " let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
 " let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Tmux
 if &term =~ '^screen'
