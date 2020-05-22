@@ -24,13 +24,13 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'posva/vim-vue'
 Plug 'jiangmiao/auto-pairs'
 
 " Lint
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -235,10 +235,10 @@ let g:lightline = {
       \ }
 
 " ALE linter
-let g:ale_lint_on_save = 0
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:airline#extensions#ale#enabled = 1
+" let g:ale_lint_on_save = 0
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_enter = 0
+" let g:airline#extensions#ale#enabled = 1
 
 " Deoplete
 " let g:deoplete#enable_at_startup = 1
@@ -275,3 +275,14 @@ let g:jedi#use_splits_not_buffers = "right"
 
 " set default comment string to be #
 set commentstring=#\ %s
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
