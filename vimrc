@@ -214,8 +214,11 @@ set nofoldenable
 " Unorganized
 """"""""""""""""""""""""""""
 nnoremap <leader>d          :NERDTreeToggle<CR>
-nnoremap <leader>f          :Ag<CR>
-nnoremap <leader>t          :FZF<CR>
+nnoremap <leader>f          :Rg<CR>
+nnoremap <leader>t          :Files<CR>
+nnoremap <leader>g          :Windows<CR>
+nnoremap <leader>s          :Lines<CR>
+nnoremap <leader>ss         :Lines<CR>
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
