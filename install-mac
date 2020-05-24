@@ -4,5 +4,8 @@ if [ "$(uname -s)" != 'Darwin' ]; then
 fi
 
 # Homebrew
-[ -z "$(which brew)" ] &&
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+[ -z "$(which brew)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# zshrc
+mv -v ~/.zshrc ~/.zshrc.old 2> /dev/null
+ln -sf $BASE/zshrc ~/.zshrc

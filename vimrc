@@ -29,6 +29,7 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'posva/vim-vue'
 Plug 'jiangmiao/auto-pairs'
+Plug 'airblade/vim-gitgutter'
 
 " Lint
 " Plug 'w0rp/ale'
