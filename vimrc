@@ -155,6 +155,7 @@ nnoremap <CR> :nohlsearch<cr>
 """""""""""""""""""""""""""""
 set wildmenu
 set cmdheight=1
+set updatetime=300
 set mat=2
 
 set noerrorbells
@@ -220,7 +221,8 @@ nnoremap <leader>f          :Rg<CR>
 nnoremap <leader>t          :Files<CR>
 nnoremap <leader>g          :Windows<CR>
 nnoremap <leader>s          :Lines<CR>
-nnoremap <leader>ss         :Lines<CR>
+nnoremap <leader>ss         :BLines<CR>
+nnoremap <leader>hh         :History:<CR>
 
 " NERDTree toggle
 map <leader>nt :NERDTreeToggle<CR>
@@ -233,10 +235,23 @@ let g:strip_whitespace_on_save = 1
 " Airline fix
 set laststatus=2
 set ttimeoutlen=50
-let g:airline_powerline_fonts=1
+set noshowmode
+
+" Coc Statusline
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
 
 let g:lightline = {
       \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status',
+      \   'currentfunction': 'CocCurrentFunction'
+      \ },
       \ }
 
 " ALE linter
@@ -291,3 +306,20 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Git gutter
+set signcolumn=yes  " Always on
+highlight clear SignColumn
+call gitgutter#highlight#define_highlights()
+let g:gitgutter_override_sign_column_highlight = 0
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=2
+highlight GitGutterChange ctermfg=3
+highlight GitGutterDelete ctermfg=1
+highlight GitGutterChangeDelete ctermfg=4
