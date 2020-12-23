@@ -20,6 +20,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
@@ -28,7 +29,6 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 " Plug 'davidhalter/jedi-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'posva/vim-vue'
-Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 
 " Lint
@@ -38,7 +38,8 @@ Plug 'junegunn/fzf.vim'
 
 " Color Themes
 Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
+
 
 call plug#end()
 
@@ -48,15 +49,23 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Themes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_Co=256
+" set t_Co=256
 " let g:solarized_termcolors=256
 set background=dark
-colorscheme solarized
+colorscheme solarized8
+" set termguicolors
 " colorscheme Tomorrow-Night
 
 " disable Background Color Erase on windows ubuntu subsystem
 if &term =~ '256color'
     set t_ut=
+endif
+
+" Enable true color on tmux
+if has('termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
 endif
 
 
@@ -217,7 +226,7 @@ set nofoldenable
 " Unorganized
 """"""""""""""""""""""""""""
 nnoremap <leader>d          :NERDTreeToggle<CR>
-nnoremap <leader>f          :Rg<CR>
+nnoremap <leader>f          :Ag<CR>
 nnoremap <leader>t          :Files<CR>
 nnoremap <leader>g          :Windows<CR>
 nnoremap <leader>s          :Lines<CR>
@@ -246,11 +255,13 @@ let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'readonly', 'gitbranch', 'filename', 'modified'],
+      \             ['cocstatus', 'currentfunction' ] ]
       \ },
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
-      \   'currentfunction': 'CocCurrentFunction'
+      \   'currentfunction': 'CocCurrentFunction',
+      \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
 
@@ -277,15 +288,16 @@ endif
 
 " coc config
 let g:coc_global_extensions = [
-  \ 'coc-snippets',
   \ 'coc-pairs',
-  \ 'coc-tsserver',
   \ 'coc-python',
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-json',
+  \ 'coc-vetur',
   \ ]
 
+let g:coc_disable_startup_warning = 1
+let g:python3_host_prog = '/home/jeffrey.wu/.pyenv/versions/nvim/bin/python3'
 
 " disable autocompletion, cause we use deoplete for completion
 let g:jedi#completions_enabled = 0
