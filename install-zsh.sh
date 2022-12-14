@@ -27,9 +27,13 @@ ln -sf zshrc ~/.zshrc
 
 # Install fzf
 echo "Installing fzf..."
-sudo apt-get install fzf
+sudo apt-get install fzf ripgrep fd-find
 
 
 # TODO: Add more steps here
 # Install tmux
 sudo apt-get install tmux
+
+# Set up git user
+git config --global user.name "Jeffrey Wu"
+git config --global user.email "jeffreywu1996@gmail.com"

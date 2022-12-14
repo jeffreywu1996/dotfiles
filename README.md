@@ -2,6 +2,10 @@
 
 My dotfiles.
 
+# TODO
+- Finish install-zsh.sh script
+- Install github ssh keys
+
 ## Setup
 1. Simple vimrc - Setup vim on new comp
 ```
