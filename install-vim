@@ -19,3 +19,16 @@ vim +PlugInstall +qall
 # tmux
 mv -v ~/.tmux.conf ~/.tmux.conf.old 2> /dev/null
 ln -sf $BASE/tmux.conf ~/.tmux.conf
+
+# Install node (needed by coc)
+if ! which node > /dev/null
+then
+  curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+  sudo apt-get install -y nodejs
+fi
+
+# Install fg (used by fzf)
+if ! which fd > /dev/null
+then
+  sudo apt-get install -y fd-find
+fi
