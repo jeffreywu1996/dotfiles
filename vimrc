@@ -1,302 +1,202 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Modern Vim Configuration
+" Maintainer: Jeffrey Wu
+" Platform: macOS & Linux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SIMPLE VIMRC
 
-" Maintainer:
-"       Jeffrey Wu
-"
+" => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax enable
+set nocompatible              " Use Vim settings, rather than Vi
+set encoding=utf-8           " Set default encoding
+set history=1000             " Increase command history
+set autoread                 " Auto reload changed files
+set mouse=a                  " Enable mouse support
+set shortmess+=I            " Disable splash screen
+set signcolumn=yes          " Always show signcolumn
+set updatetime=300          " Faster completion
+set timeoutlen=500          " Faster key sequence completion
+set title                   " Show file title in terminal
+set modeline                " Enable modeline
 
+" => File Management
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle Plugin
+set noswapfile              " Disable swap files
+set nobackup               " Disable backup files
+set nowritebackup          " Disable backup files while editing
+set fileformats=unix,dos   " Use Unix as standard file type
+
+" => Vim-Plug Plugin Manager
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
+" IDE Features
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Git Integration
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'           " Added for better git integration
+
+" Editor Enhancement
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
-" Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-" Plug 'davidhalter/jedi-vim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'posva/vim-vue'
 Plug 'jiangmiao/auto-pairs'
-Plug 'airblade/vim-gitgutter'
+Plug 'machakann/vim-highlightedyank' " Added to highlight yanked text
 
-" Lint
-" Plug 'w0rp/ale'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Language Support
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'posva/vim-vue'
+Plug 'sheerun/vim-polyglot'         " Added for better syntax support
 
-" Color Themes
-Plug 'chriskempson/vim-tomorrow-theme'
+" UI Enhancement
+Plug 'itchyny/lightline.vim'
+Plug 'christoomey/vim-tmux-navigator'
+
+" Color Schemes
 Plug 'altercation/vim-colors-solarized'
+Plug 'chriskempson/vim-tomorrow-theme'
 
 call plug#end()
 
-filetype plugin indent on    " required
-
-
+" => User Interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Themes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_Co=256
-" let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
-" colorscheme Tomorrow-Night
+set number                  " Show line numbers
+set ruler                  " Show cursor position
+set cmdheight=1            " Height of command bar
+set hidden                 " Allow hidden buffers
+set showmatch              " Show matching brackets
+set mat=2                  " Blink matching brackets
+set colorcolumn=80         " Show column guide
+set wildmenu               " Command completion
+set showcmd               " Show incomplete commands
+set noerrorbells          " No error sounds
+set novisualbell          " No visual bell
+set laststatus=2          " Always show status line
 
-" disable Background Color Erase on windows ubuntu subsystem
+" => Theme Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set t_Co=256              " Enable 256 colors
+set background=dark       " Dark background
+colorscheme solarized     " Set color scheme
+
+" Fix background color for tmux
 if &term =~ '256color'
     set t_ut=
 endif
 
-
+" => Text, Tabs, and Indentation
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
+set expandtab             " Use spaces instead of tabs
+set smarttab             " Smart tab behavior
+set shiftwidth=2         " Width for autoindents
+set tabstop=2           " Width of tab character
+set softtabstop=2       " See multiple spaces as tabstops
+set autoindent          " Auto indent
+set smartindent         " Smart indent
+set wrap               " Wrap lines
+set linebreak          " Break lines at word
+set textwidth=500      " Line wrap width
+
+" => Search Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set encoding
-set encoding=utf-8
+set ignorecase          " Ignore case when searching
+set smartcase          " Smart case search
+set hlsearch           " Highlight search results
+set incsearch          " Incremental search
+set magic             " Regular expressions
 
-" open .vimrc
-nnoremap <silent> <leader>v :tabnew ~/.vimrc<CR>
-nnoremap <silent> <leader>vs :w<CR>:source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo ' reloaded'"<CR>>
-
-" fix copy paste to clipboard
-if system('uname -s') == "Darwin\n"
-  set clipboard=unnamed "OSX
-else
-  set clipboard=unnamedplus "Linux
-endif
-
-" Sets how many lines of history VIM has to remember
-set history=500
-
-" Set to auto read when a file is changed from the outside
-set autoread
-
-" Fast undo/redo
-nnoremap <leader>z :u<cr>
-nnoremap <leader>Z <C-R>
-
-" Fast saving/close
-nmap <leader>w :w!<cr>
-nmap <leader>q :q<cr>
-nmap <leader>wq :wq<cr>
-
-syntax enable    " syntax on
-set mouse+=a      " enable use of mouse
-if !has('nvim')
-  set ttymouse=xterm2
-endif
-
-
-set shortmess+=I " no splash
-set nocompatible " vim only, no vi
-set title        " terminal title = buffer title
-set modeline     " always show modeline
-
-set number       " linum
-set ruler		 " shows char and line number
-set showcmd      " show command info in minibuffer
-set showmatch    " highlight matching parens
-
-set colorcolumn=80
-
-
+" => Key Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set expandtab
-set smarttab
+" Fast saving and quitting
+nnoremap <leader>w :w!<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>x :x<CR>
 
-set shiftwidth=2
-set tabstop=2
+" Better window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
-set lbr
-set tw=500
+" Quick .vimrc edit
+nnoremap <leader>ve :edit $MYVIMRC<CR>
+nnoremap <leader>vs :source $MYVIMRC<CR>
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
-
-" set font size
-if has('gui_running')
-  set guifont=Menlo:h13
-endif
-
-autocmd FileType html setlocal ts=2 sts=2 sw=2
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-autocmd FileType vue setlocal ts=2 sts=2 sw=2
-
-""""""""""""""""""""""""""""""
-" => Highlight
-""""""""""""""""""""""""""""""
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set lazyredraw
-set magic
-set showmatch
-nnoremap <CR> :nohlsearch<cr>
-
-
-"""""""""""""""""""""""""""""
-" VIM user interface
-"""""""""""""""""""""""""""""
-set wildmenu
-set cmdheight=1
-set updatetime=300
-set mat=2
-
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-set foldcolumn=1
-
-" Make vertical splits thinner
-hi VertSplit ctermbg=NONE guibg=NONE
-
-""""""""""""""""""""""""""""
-" Files, backup
-"""""""""""""""""""""""""""
-set noswapfile
-set fileformats=unix,dos
-set noeb vb t_vb=
-set backspace=indent,eol,start
-
-
-""""""""""""""""""""""""""""
-" Moving around
-""""""""""""""""""""""""""""
-map j gj
-map k gk
-
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-
+" Better line navigation
+nnoremap j gj
+nnoremap k gk
 nnoremap B ^
 nnoremap E $
 
-inoremap jj <esc>
+" Quick escape
+inoremap jk <ESC>
 
-nnoremap <leader>j <C-W>j
-nnoremap <leader>k <C-W>k
-nnoremap <leader>l <C-W>l
-nnoremap <leader>h <C-W>h
-nnoremap <leader>rr <C-W>r
+" FZF mappings
+nnoremap <leader>f :Rg<CR>
+nnoremap <leader>t :Files<CR>
+nnoremap <leader>g :Windows<CR>
+nnoremap <leader>s :Lines<CR>
+nnoremap <leader>ss :BLines<CR>
+nnoremap <leader>hh :History:<CR>
 
+" => Plugin Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree
+nnoremap <leader>n :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
 
-""""""""""""""""""""""""""""
-" Python
-""""""""""""""""""""""""""""
-" Python Folding
-set foldmethod=indent
-set nofoldenable
+" COC
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-python',
+  \ 'coc-pairs',
+  \ 'coc-snippets'
+  \ ]
 
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-""""""""""""""""""""""""""""
-" Unorganized
-""""""""""""""""""""""""""""
-nnoremap <leader>d          :NERDTreeToggle<CR>
-nnoremap <leader>f          :Rg<CR>
-nnoremap <leader>t          :Files<CR>
-nnoremap <leader>g          :Windows<CR>
-nnoremap <leader>s          :Lines<CR>
-nnoremap <leader>ss         :BLines<CR>
-nnoremap <leader>hh         :History:<CR>
-
-" NERDTree toggle
-map <leader>nt :NERDTreeToggle<CR>
-
-" White space
-map <leader>l :ToggleWhitespace<CR>
-map <leader>ll :StripWhitespace<CR>
-let g:strip_whitespace_on_save = 1
-
-" Airline fix
-set laststatus=2
-set ttimeoutlen=50
-set noshowmode
-
-" Coc Statusline
-function! CocCurrentFunction()
-    return get(b:, 'coc_current_function', '')
-endfunction
-
+" Lightline
 let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'cocstatus', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \   'currentfunction': 'CocCurrentFunction'
+      \   'gitbranch': 'FugitiveHead',
+      \   'cocstatus': 'coc#status'
       \ },
       \ }
 
-" ALE linter
-" let g:ale_lint_on_save = 0
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_enter = 0
-" let g:airline#extensions#ale#enabled = 1
+" Whitespace
+let g:strip_whitespace_on_save = 1
+let g:better_whitespace_enabled = 1
+map <leader>l :ToggleWhitespace<CR>
+map <leader>ll :StripWhitespace<CR>
 
-" Deoplete
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#auto_complete_delay=50
-" let g:python3_host_prog = '/usr/bin/python3.6'  "Setting python 3.6
-" let $NVIM_PYTHON_LOG_FILE="/tmp/nvim_log"
-" let $NVIM_PYTHON_LOG_LEVEL="DEBUG"
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" GitGutter
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed = '-'
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=2
+highlight GitGutterChange ctermfg=3
+highlight GitGutterDelete ctermfg=1
+highlight GitGutterChangeDelete ctermfg=4
 
-" Tmux
-if &term =~ '^screen'
-  " tmux knows the extended mouse mode
-  set ttymouse=xterm2
-endif
-
-" coc config
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-python',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-json',
-  \ ]
-
-
-" disable autocompletion, cause we use deoplete for completion
-let g:jedi#completions_enabled = 0
-
-" open the go-to function in split, not another buffer
-let g:jedi#use_splits_not_buffers = "right"
-
-" set default comment string to be #
-set commentstring=#\ %s
-
-" use <tab> for trigger completion and navigate to the next complete item
+" Tab completion
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
@@ -307,19 +207,27 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" => Auto Commands
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup vimrc_autocmds
+  autocmd!
+  " Set indent for specific filetypes
+  autocmd FileType python setlocal ts=4 sts=4 sw=4
+  autocmd FileType javascript,typescript,vue,html,css setlocal ts=2 sts=2 sw=2
 
-" Git gutter
-set signcolumn=yes  " Always on
-highlight clear SignColumn
-call gitgutter#highlight#define_highlights()
-let g:gitgutter_override_sign_column_highlight = 0
-highlight clear SignColumn
-highlight GitGutterAdd ctermfg=2
-highlight GitGutterChange ctermfg=3
-highlight GitGutterDelete ctermfg=1
-highlight GitGutterChangeDelete ctermfg=4
+  " Strip whitespace on save
+  autocmd BufWritePre * StripWhitespace
+
+  " Return to last edit position when opening files
+  autocmd BufReadPost *
+       \ if line("'\"") > 0 && line("'\"") <= line("$") |
+       \   exe "normal! g`\"" |
+       \ endif
+augroup END
+
+" Fix clipboard support for WSL
+if system('uname -s') == "Darwin\n"
+  set clipboard=unnamed "OSX
+else
+  set clipboard=unnamedplus "Linux
+endif
