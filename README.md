@@ -1,118 +1,147 @@
 # Dotfiles
 
-My dotfiles.
+Personal dotfiles for development environment setup, supporting both macOS and Linux.
 
-# TODO
-- Finish install-zsh.sh script
-- Install github ssh keys
+## Features
+- Vim configuration with carefully selected plugins
+- Tmux setup with modern features
+- Zsh configuration with Oh My Zsh
+- Cross-platform support (macOS and Linux)
 
-## Setup
-1. Simple vimrc - Setup vim on new comp
-```
-./install-vim
-```
+## Quick Start
+```bash
+# Full installation (recommended)
+./install.sh
 
-2. Minimal vimrc - Get a minimally usable vim without plugins
-```
-./install-minimal
-```
-
-
-# Setup Files (OLD)
-
-This includes basic setup files for vim and zsh (or bash).
-
-## Directions
-
-Run script `install_simple_vimrc.sh` to install a simple usable version of vimrc to make vim usable.
-
-(Not updated) Run script `install_mac.sh` to install a full version of vimrc.
-
-## Setting up on a new machine
-
-#### Setup bashrc on MacOS
-First check if `.bashrc`, if not, add the following line to either `.bash_profile` or `.profile`.
-
-```
-# Load .bashrc if it exists
-test -f ~/.bashrc && source ~/.bashrc
+# Vim-only installation
+./install-vim.sh
 ```
 
-This line links MacOS to use `.bashrc`. Now we can just copy `.bashrc`.
+## Manual Installation
 
-#### Install Homebrew vim on MacOS
-Get [Homebrew](http://brew.sh/)
+### Prerequisites
+- Git
+- Vim 8.0+
+- Tmux 2.7+
+- Zsh
+- Node.js (for CoC)
 
-```brew install macvim --override-system-vim```
-```brew install vim --override-system-vi```
+### macOS Prerequisites
+```bash
+# Install Homebrew if not already installed
+/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"
 
-And `brew linkapps` or `brew link vim` to link MacOS to use the homebrew vim.
-
-```ln -s /usr/local/bin/mvim vim```
-
-Might work as well.
-
-Follow this [link](http://stackoverflow.com/questions/21694327/installing-vim-with-homebrew) for more details on installing vim with homebrew.
-
-## Setup vim
-
-First install a plugin manager, [Plug](https://github.com/junegunn/vim-plug).
-
-```
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# Install required packages
+brew install \\
+    ripgrep \\
+    fd \\
+    fzf \\
+    reattach-to-user-namespace \\
+    tmux
 ```
 
-Then start vim with `vim` in command line.
-Type `:PlugInstall` then enter to install all the plugins used in vimrc.
-
-Now all plugins should be installed and ready to use.
-
-The plugin [YouCompleteMe](https://github.com/Valloric/YouCompleteMe) requires addition steps.
-Run these command to install compile correctly.
-
-```
-cd ~/.vim/plugged/YouCompleteMe
-./install.py --clang-completer --tern-completer
+### Linux Prerequisites
+```bash
+sudo apt-get update
+sudo apt-get install -y \\
+    ripgrep \\
+    fd-find \\
+    fzf \\
+    tmux
 ```
 
-Ycm also requires a `ycm_extra_conf.py` file to have autocomplete working correctly. A sample of this file is placed in this directory and vimrc has it pointed to this directory (This means ycm should just work, given that this folder is placed at the root(~/)).
+## Components
 
-## Vim Colors
-To get more color themes, copy the folder `colors` in this directory to `~/.vim`.
+### Vim Setup
+- Modern plugins managed by vim-plug
+- CoC for code completion
+- FZF for fuzzy finding
+- NERDTree for file navigation
+- Git integration with GitGutter
+- Tmux integration
+- Solarized color scheme
 
-## Linking files
-Run these command to symlink system's setup files to this folder. The benefit is that system's setup files will update with this folder.
+### Tmux Features
+- Modern configuration
+- Mouse support
+- Vim-like keybindings
+- Session persistence
+- Copy-paste integration
+- Solarized theme
 
-Linking vimrc
-```ln -sf ~/setup/vimrc ~/.vimrc```
+### Zsh Configuration
+- Oh My Zsh framework
+- Custom plugins and themes
+- Improved history
+- Better completions
+- FZF integration
 
-Linking zshrc
-```ln -sf ~/setup/zshrc ~/.zshrc```
+## Installation Options
 
-Linking bashrc
-```ln -sf ~/setup/bashrc ~/.bashrc```
+### Full Installation
+Installs and configures everything:
+```bash
+./install.sh
+```
 
-## Python
-Install python with ```brew install python```.
+### Component-specific Installation
+```bash
+# Vim only
+./install-vim.sh
 
-Install python 3 with ```brew install python3```.
+# Tmux only
+./install-tmux.sh
 
-### Virtualenv
-Install virtualenvwrapper with ```pip install virtualenvwrapper```.
-TODO... Instructions on how to set up virtual prompt for zsh(postactivate stuff)
+# Zsh only
+./install-zsh.sh
+```
 
+## Post-Installation
 
+### Vim
+1. Start vim and run `:PlugInstall`
+2. For Python support: `pip install jedi`
+3. For JS/TS support: `npm install -g typescript`
 
+### Tmux
+1. Start tmux with `tmux`
+2. Install plugins with `prefix + I`
 
+### Zsh
+1. Install Oh My Zsh plugins
+2. Restart your terminal
 
+## File Structure
+```
+.
+├── install.sh          # Main installation script
+├── install-vim.sh      # Vim-specific installation
+├── install-tmux.sh     # Tmux-specific installation
+├── install-zsh.sh      # Zsh-specific installation
+├── vimrc              # Vim configuration
+├── tmux.conf          # Tmux configuration
+└── zshrc              # Zsh configuration
+```
 
+## Customization
+- Vim: Edit `vimrc`
+- Tmux: Edit `tmux.conf`
+- Zsh: Edit `zshrc`
 
+## Troubleshooting
 
-## Instructions
-### Python
-#### Virtualenv
-`mkvirtualenv` creates a new virtualenv
-`rmvirtualenv` deletes a virtualenv
-`workon virtualenv_name` transfers to that virutalenv
-`deactivate` deactivates
+### Known Issues
+1. If you see font issues in vim or tmux, install a Nerd Font:
+   - macOS: `brew tap homebrew/cask-fonts && brew install --cask font-hack-nerd-font`
+   - Linux: Download from [Nerd Fonts](https://www.nerdfonts.com/)
+
+2. For clipboard issues in tmux on macOS:
+   - Ensure `reattach-to-user-namespace` is installed
+
+### Common Solutions
+- Run `:checkhealth` in vim for diagnostics
+- Check `tmux -V` for version compatibility
+- Ensure Node.js is installed for CoC functionality
+
+## Contributing
+Feel free to fork and submit pull requests.
