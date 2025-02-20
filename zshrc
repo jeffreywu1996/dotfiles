@@ -31,9 +31,12 @@ setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed
 setopt INC_APPEND_HISTORY       # Write to the history file immediately
 setopt SHARE_HISTORY           # Share history between all sessions
 
+zstyle ':omz:alpha:lib:git' async-prompt no
+
 # Plugins
 plugins=(
   git
+  # git-prompt
   zsh-autosuggestions
   docker
   docker-compose

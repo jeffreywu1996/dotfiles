@@ -74,6 +74,7 @@ set mat=2                  " Blink matching brackets
 set colorcolumn=80         " Show column guide
 set wildmenu               " Command completion
 set showcmd               " Show incomplete commands
+set belloff=all           " Disable all bells"
 set noerrorbells          " No error sounds
 set novisualbell          " No visual bell
 set laststatus=2          " Always show status line
@@ -116,6 +117,8 @@ set magic             " Regular expressions
 nnoremap <leader>w :w!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>x :x<CR>
+nnoremap <leader>z :u<CR>
+nnoremap <leader>wq :wq!<CR>
 
 " Better window navigation
 nnoremap <C-h> <C-w>h
