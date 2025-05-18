@@ -61,7 +61,7 @@ ln -sf "$BASE/vimrc" ~/.vimrc
 if ! command -v node > /dev/null; then
     print_status "Installing Node.js..."
     if [ "$OS" = "linux" ]; then
-        curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+        curl -sL https://deb.nodesource.com/setup_23.x | sudo bash -
         sudo apt-get install -y nodejs
     elif [ "$OS" = "macos" ]; then
         brew install node
