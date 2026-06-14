@@ -1,0 +1,6 @@
+# vint policy for this repo.
+# Gate on real problems (errors); ignore Google-style-guide opinions
+# (e.g. =~ vs =~#, autocmd-group nits) that don't affect a personal vimrc.
+cmdargs:
+  severity: error
+  color: true

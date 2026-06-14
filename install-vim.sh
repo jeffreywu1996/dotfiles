@@ -31,10 +31,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         print_status "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-    INSTALL_CMD="brew install"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     OS="linux"
-    INSTALL_CMD="sudo apt-get install -y"
     print_status "Updating package list..."
     sudo apt-get update
 else

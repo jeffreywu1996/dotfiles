@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Fast static checks on both OSes: shellcheck + syntax/load of the configs.
+  lint:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Install shellcheck (macOS)
+        if: runner.os == 'macOS'
+        run: brew install shellcheck
+      - name: Install vint (vimscript linter)
+        # vim-vint imports the deprecated pkg_resources, so pin setuptools<81.
+        run: |
+          pipx install vim-vint
+          pipx inject vim-vint "setuptools<81"
+      - name: Run lint suite
+        run: ./test.sh
+
+  # Full end-to-end install on a clean Debian container, with assertions.
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build install + assert (Dockerfile.test)
+        run: docker build -f Dockerfile.test -t dotfiles-test .
