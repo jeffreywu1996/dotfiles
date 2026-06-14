@@ -159,7 +159,7 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',
-  \ 'coc-python',
+  \ 'coc-pyright',
   \ 'coc-pairs',
   \ 'coc-snippets'
   \ ]

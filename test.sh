@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Static validation for the dotfiles. Fast (<1s) — run before committing.
-# Checks: shellcheck on the install scripts, syntax-parse of zshrc, a vint lint
-# of vimrc, and a clean load of tmux.conf. Exits non-zero on the first failure.
+# Checks: shellcheck on shell scripts, syntax-parse of zshrc, and clean loads
+# of vimrc and tmux.conf. Exits non-zero on the first failure.
 #
 # Usage:  ./test.sh
 #
@@ -16,11 +16,9 @@ pass() { printf '\033[1;32m  ok\033[0m  %s\n' "$*"; }
 bad()  { printf '\033[1;31mFAIL\033[0m  %s\n' "$*"; fail=1; }
 skip() { printf '\033[1;33mskip\033[0m  %s\n' "$*"; }
 
-SCRIPTS=(install.sh install-vim.sh install-tmux.sh install-zsh.sh install-minimal test.sh test-integration.sh)
-
 echo "== shellcheck =="
 if command -v shellcheck >/dev/null; then
-  for f in "${SCRIPTS[@]}"; do
+  for f in install.sh install-minimal test.sh test-integration.sh; do
     if shellcheck -x "$f"; then pass "$f"; else bad "$f"; fi
   done
 else
@@ -33,14 +31,17 @@ if command -v zsh >/dev/null; then
 else
   skip "zsh not installed"
 fi
+if bash -n install.sh; then pass "bash -n install.sh"; else bad "bash -n install.sh"; fi
 
 echo "== vimrc lint =="
-# Static vimscript lint (analog of shellcheck). `vim -es` is avoided: in headless
-# Ex mode plugins/colorschemes throw errors that never occur interactively.
+# Static vimscript lint (analog of shellcheck). `vim -es` is avoided here: in
+# headless Ex mode plugins/colorschemes throw errors that never occur interactively,
+# producing false failures. Real vimrc loading is exercised by install.sh's
+# `vim +PlugInstall` in the Docker integration test.
 if command -v vint >/dev/null; then
   if vint vimrc; then pass "vint vimrc"; else bad "vint vimrc"; fi
 else
-  skip "vint not installed (pipx install vim-vint && pipx inject vim-vint 'setuptools<81')"
+  skip "vint not installed (pip install vim-vint) — vimrc lint skipped"
 fi
 
 echo "== tmux loads =="

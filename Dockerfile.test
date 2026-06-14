@@ -2,14 +2,12 @@
 #
 #   docker build -f Dockerfile.test -t dotfiles-test .
 #
-# A successful build means ./install.sh ran end-to-end and all assertions passed.
+# A successful build means install.sh ran end-to-end and all assertions passed.
 FROM debian:stable-slim
 
-# Prerequisites the install scripts assume are already present (see README):
-# sudo/curl/git for the installers, and vim (install-vim.sh runs `vim +PlugInstall`
-# but does not install vim itself).
+# install.sh uses sudo + curl + git; a clean Debian image has none of these.
 RUN apt-get update \
- && apt-get install -y --no-install-recommends sudo curl git ca-certificates locales vim \
+ && apt-get install -y --no-install-recommends sudo curl git ca-certificates locales \
  && rm -rf /var/lib/apt/lists/*
 
 # Run as a non-root user with passwordless sudo — mirrors a real machine.
@@ -20,6 +18,8 @@ WORKDIR /home/tester/dotfiles
 
 COPY --chown=tester:tester . .
 
-# Full install (installs node + rg/fd/fzf/tmux, vim plugins, symlinks), then assert.
-RUN ./install.sh
+# Full install, then assert the outcome. Non-interactive so prompts don't hang.
+# Skip the Claude Code CLI in CI to avoid depending on an external installer URL;
+# nvm + node still install so the coc.nvim requirement is exercised.
+RUN INSTALL_CLAUDE_CODE=false ./install.sh
 RUN ./test-integration.sh
