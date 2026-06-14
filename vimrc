@@ -83,7 +83,7 @@ set laststatus=2          " Always show status line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256              " Enable 256 colors
 set background=dark       " Dark background
-colorscheme solarized     " Set color scheme
+silent! colorscheme solarized  " silent! so a fresh install (no plugins yet) doesn't abort
 
 " Fix background color for tmux
 if &term =~ '256color'
