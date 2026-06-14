@@ -7,6 +7,7 @@ on:
 jobs:
   # Fast static checks on both OSes: shellcheck + syntax/load of the configs.
   lint:
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -30,6 +31,7 @@ jobs:
 
   # Full end-to-end install on a clean Debian container, with assertions.
   integration:
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

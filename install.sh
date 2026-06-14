@@ -52,18 +52,20 @@ install_packages() {
     brew)
       if ! command -v brew >/dev/null; then
         info "Installing Homebrew"
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       fi
       info "Installing packages via brew"
       brew install git zsh tmux vim neovim fzf ripgrep fd bat eza zoxide curl python3 "${EXTRA_PACKAGES[@]}" || true
       ;;
     apt)
       info "Installing packages via apt"
-      sudo apt-get update
+      # noninteractive avoids tzdata/etc. prompts that hang an unattended/fresh box.
+      export DEBIAN_FRONTEND=noninteractive
+      sudo -E apt-get update
       # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
-      sudo apt-get install -y git zsh tmux vim neovim fzf ripgrep fd-find bat zoxide curl \
+      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim fzf ripgrep fd-find bat zoxide curl \
         python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
-      sudo apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
       ;;
     none)
       warn "Unsupported package manager (likely Synology/other)."
@@ -101,8 +103,9 @@ install_runtimes() {
 install_zsh_stack() {
   if [ ! -d "$HOME/.oh-my-zsh" ]; then
     info "Installing oh-my-zsh"
+    # --unattended => no chsh prompt, no auto-launch of zsh (would hang unattended runs)
     RUNZSH=no KEEP_ZSHRC=yes sh -c \
-      "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   fi
   local custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
   clone_or_skip() { [ -d "$2" ] || git clone --depth=1 "$1" "$2"; }
@@ -149,7 +152,7 @@ symlink_configs() {
 # ---------------------------------------------------------------------------
 install_plugins() {
   info "Installing vim plugins"
-  vim +PlugInstall +qall || warn "vim +PlugInstall reported an issue"
+  vim +PlugInstall +qall </dev/null || warn "vim +PlugInstall reported an issue"
   info "Installing tmux plugins"
   # tpm normally gets this from a running tmux server; set it for headless install.
   TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins" \
@@ -176,6 +179,12 @@ set_default_shell() {
   case "${SHELL:-}" in */zsh) return 0 ;; esac
   local zsh_path; zsh_path="$(command -v zsh || true)"
   [ -n "$zsh_path" ] || return 0
+  # chsh prompts for a password — skip it on an unattended run (no tty) so CI /
+  # container / piped installs don't hang. Real SSH sessions still get prompted.
+  if [ ! -t 0 ]; then
+    warn "Non-interactive run; skipping default-shell change. Run: chsh -s $zsh_path"
+    return 0
+  fi
   # chsh only accepts shells listed in /etc/shells.
   if ! grep -qx "$zsh_path" /etc/shells 2>/dev/null; then
     warn "zsh ($zsh_path) is not in /etc/shells; leaving your shell unchanged."
