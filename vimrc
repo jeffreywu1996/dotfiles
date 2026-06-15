@@ -56,6 +56,7 @@ Plug 'sheerun/vim-polyglot'         " Added for better syntax support
 " UI Enhancement
 Plug 'itchyny/lightline.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'ojroques/vim-oscyank', {'branch': 'main'}  " OSC 52 clipboard over SSH/tmux
 
 " Color Schemes
 Plug 'altercation/vim-colors-solarized'
@@ -228,9 +229,17 @@ augroup vimrc_autocmds
        \ endif
 augroup END
 
-" Fix clipboard support for WSL
-if system('uname -s') == "Darwin\n"
-  set clipboard=unnamed "OSX
+" Clipboard: OSC 52 for SSH/tmux (works over any connection without X11/pbcopy).
+" On a plain local terminal the system clipboard is used instead.
+if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($TMUX)
+  " Let oscyank handle clipboard writes; reads fall back to the unnamed reg.
+  let g:oscyank_term = 'default'
+  autocmd TextYankPost * if v:event.operator is# 'y' || v:event.operator is# 'd'
+        \ | execute 'OSCYankRegister "' | endif
 else
-  set clipboard=unnamedplus "Linux
+  if system('uname -s') =~# 'Darwin'
+    set clipboard=unnamed       " macOS
+  else
+    set clipboard=unnamedplus   " Linux / WSL
+  endif
 endif
