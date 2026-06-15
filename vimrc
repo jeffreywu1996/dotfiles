@@ -232,10 +232,13 @@ augroup END
 " Clipboard: OSC 52 for SSH/tmux (works over any connection without X11/pbcopy).
 " On a plain local terminal the system clipboard is used instead.
 if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($TMUX)
-  " Let oscyank handle clipboard writes; reads fall back to the unnamed reg.
   let g:oscyank_term = 'default'
-  autocmd TextYankPost * if v:event.operator is# 'y' || v:event.operator is# 'd'
-        \ | execute 'OSCYankRegister "' | endif
+  " Copy to the local clipboard only on an explicit yank (y) to the unnamed
+  " register — not on deletes/changes, so dd etc. don't clobber your clipboard.
+  autocmd TextYankPost *
+        \ if v:event.operator is# 'y' && v:event.regname is# '' |
+        \   execute 'OSCYankRegister "' |
+        \ endif
 else
   if system('uname -s') =~# 'Darwin'
     set clipboard=unnamed       " macOS

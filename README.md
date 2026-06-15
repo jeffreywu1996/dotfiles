@@ -47,8 +47,13 @@ just symlinks — install `git zsh tmux vim fzf ripgrep fd bat zoxide` yourself 
 
 ## What you get
 
-- **Prompt** shows the hostname when you're on an SSH session (e.g. `raspberrypi ~ »`),
-  so it's always clear which box you're on. Local sessions keep the clean minimal prompt.
+- **Prompt** shows the hostname and git branch when you're on an SSH session
+  (e.g. `raspberrypi ~/dotfiles [master●] »`), so it's always clear which box and
+  branch you're on. Local sessions keep the clean minimal prompt.
+- **Clipboard over SSH** — yanking in vim or tmux copies to your *local* machine's
+  clipboard via OSC 52 (no X11/pbcopy forwarding needed). Requires a terminal with
+  OSC 52 enabled (iTerm2: Settings → General → Selection → "Applications in terminal
+  may access clipboard"; Wezterm/Kitty/Ghostty work out of the box).
 - **Modern CLI tools**, aliased only when installed: `eza` (ls), `bat` (cat),
   `zoxide` (smart cd), `fzf` + `ripgrep` + `fd`.
 - **vim** with coc.nvim (pyright/tsserver/eslint/prettier/json), fzf, NERDTree,
@@ -60,7 +65,7 @@ just symlinks — install `git zsh tmux vim fzf ripgrep fd bat zoxide` yourself 
 
 - tmux: `C-a` prefix · `=` / `-` split · `Alt-arrows` switch pane · `prefix r` reload ·
   copy-mode `v` select, `y` yank to system clipboard.
-- vim: `<leader>t` files · `<leader>f` ripgrep · `<leader>d` NERDTree · `jj` escape ·
+- vim: `<leader>t` files · `<leader>f` ripgrep · `<leader>n` NERDTree · `jk` escape ·
   `gd` go-to-definition.
 - shell: `fs` fuzzy-switch tmux session · `Rg <pattern>` ripgrep + open in editor.
 
@@ -92,6 +97,5 @@ install-minimal      no-plugin vim fallback
 vimrc tmux.conf zshrc  the configs that get symlinked
 test.sh              static checks; Dockerfile.test + test-integration.sh  e2e
 .github/workflows/   CI
-alt_vimrc/           minimal vimrc + bash aliases
-old/                 archived bashrc/zshrc (reference only)
+alt_vimrc/           minimal vimrc + bash aliases (used by install-minimal)
 ```
