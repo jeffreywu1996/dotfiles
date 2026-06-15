@@ -94,11 +94,16 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # Show the server hostname in the prompt over SSH so it's clear which box you're on.
-# Write the full prompt explicitly rather than prepending to $PROMPT — capturing $PROMPT
-# via "..." is unreliable when the theme uses $(cmd) substitution (drops under some zsh builds).
-# This mirrors the minimal theme's own PROMPT with %m prepended.
+# Use a precmd hook instead of a PROMPT string with $(cmd) — the hook calls git_prompt_info
+# directly and bakes the result into PROMPT, so we never depend on PROMPT_SUBST evaluation.
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
-  PROMPT='%F{yellow}%m%f %2~ $(vcs_status)»%b '
+  autoload -Uz add-zsh-hook
+  _ssh_prompt_precmd() {
+    local git_info
+    git_info=$(git_prompt_info 2>/dev/null)
+    PROMPT="%F{yellow}%m%f %2~ ${git_info}»%b "
+  }
+  add-zsh-hook precmd _ssh_prompt_precmd
 fi
 
 # History: large, shared across sessions, written immediately.
