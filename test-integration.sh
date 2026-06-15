@@ -40,7 +40,16 @@ export NVM_DIR="$HOME/.nvm"
 check_cmd node
 
 echo "== zshrc actually loads under zsh =="
-if zsh -ic 'exit' >/dev/null 2>&1; then ok "interactive zsh starts"; else bad "interactive zsh failed"; fi
+# Run an interactive shell and confirm it survives sourcing zshrc by echoing a
+# sentinel. We check for the sentinel rather than the exit code: without a PTY
+# (as in this container), zle-based plugins emit a harmless "can't change option:
+# zle" warning whose non-zero status would otherwise leak through a bare `exit`.
+zsh_out="$(zsh -ic 'echo __ZSHRC_OK__' 2>&1)"
+if printf '%s' "$zsh_out" | grep -q '__ZSHRC_OK__'; then
+  ok "interactive zsh starts"
+else
+  bad "interactive zsh failed: $zsh_out"
+fi
 
 echo
 if [ "$fail" -eq 0 ]; then
