@@ -63,7 +63,8 @@ install_packages() {
       export DEBIAN_FRONTEND=noninteractive
       sudo -E apt-get update
       # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
-      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim fzf ripgrep fd-find bat zoxide curl \
+      # fzf is installed separately from GitHub (apt's version is too old for --zsh support).
+      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
         python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
       sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
       ;;
@@ -73,6 +74,50 @@ install_packages() {
       warn "Plus extras: ${EXTRA_PACKAGES[*]}"
       ;;
   esac
+}
+
+# ---------------------------------------------------------------------------
+# 1a. fzf — install from GitHub on Linux; apt's version is too old (0.38 vs
+#     0.48+ needed) for the `fzf --zsh` shell-integration command that
+#     oh-my-zsh's lib/fzf.zsh uses.  brew already gives us the latest on macOS.
+# ---------------------------------------------------------------------------
+install_fzf() {
+  [ "$PM" = "brew" ] && return 0  # brew install_packages already handled fzf
+
+  # Skip if already recent enough (fzf >= 0.48 supports --zsh).
+  if command -v fzf >/dev/null 2>&1; then
+    local minor
+    minor=$(fzf --version 2>/dev/null | sed 's/[^.]*\.\([0-9]*\)\..*/\1/')
+    if [ "${minor:-0}" -ge 48 ] 2>/dev/null; then
+      info "fzf $(fzf --version | awk '{print $1}') already installed"
+      return 0
+    fi
+  fi
+
+  local arch
+  case "$(uname -m)" in
+    aarch64|arm64) arch="arm64" ;;
+    x86_64)        arch="amd64" ;;
+    armv7l)        arch="armv7" ;;
+    *)
+      warn "Unknown arch $(uname -m) — installing fzf from apt (may be old)"
+      sudo -E apt-get install -y --no-install-recommends fzf || true
+      return 0
+      ;;
+  esac
+
+  info "Installing fzf from GitHub (apt version too old for shell integration)"
+  local latest
+  latest=$(curl -fsSL "https://api.github.com/repos/junegunn/fzf/releases/latest" \
+    | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/') || true
+  if [ -z "$latest" ]; then
+    warn "Could not fetch latest fzf release — falling back to apt"
+    sudo -E apt-get install -y --no-install-recommends fzf || true
+    return 0
+  fi
+  curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \
+    | sudo tar -xz -C /usr/local/bin fzf \
+    || warn "fzf GitHub install failed; run: sudo apt-get install fzf"
 }
 
 # ---------------------------------------------------------------------------
@@ -89,6 +134,14 @@ install_runtimes() {
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
   # shellcheck source=/dev/null
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
+  # .npmrc with a prefix/globalconfig conflicts with nvm's PATH management.
+  # Remove those lines before calling nvm install to avoid the incompatibility warning.
+  if [ -f "$HOME/.npmrc" ] && grep -qE '^(prefix|globalconfig)' "$HOME/.npmrc" 2>/dev/null; then
+    warn ".npmrc has prefix/globalconfig incompatible with nvm — removing those lines"
+    grep -vE '^(prefix|globalconfig)' "$HOME/.npmrc" > "$HOME/.npmrc.tmp" 2>/dev/null || true
+    mv "$HOME/.npmrc.tmp" "$HOME/.npmrc"
+  fi
+
   if command -v nvm >/dev/null; then
     info "Installing node ($NODE_VERSION) via nvm"
     nvm install "$NODE_VERSION" || warn "nvm install node reported an issue"
@@ -220,6 +273,7 @@ install_extras() {
 
 main() {
   install_packages
+  install_fzf
   install_runtimes
   install_zsh_stack
   install_plugin_managers
