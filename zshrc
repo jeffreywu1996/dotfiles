@@ -94,14 +94,23 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # Show the server hostname in the prompt over SSH so it's clear which box you're on.
-# Use a precmd hook instead of a PROMPT string with $(cmd) — the hook calls git_prompt_info
-# directly and bakes the result into PROMPT, so we never depend on PROMPT_SUBST evaluation.
+# We compute the git branch ourselves (synchronously) rather than using oh-my-zsh's
+# git_prompt_info: recent oh-my-zsh makes that function async (it only echoes a cache
+# populated by a background worker after the first render), so calling it from a hook
+# returns empty. A direct `git symbolic-ref` is reliable and simple. Mirrors the
+# minimal theme's [branch●] format (● = dirty).
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
   autoload -Uz add-zsh-hook
   _ssh_prompt_precmd() {
-    local git_info
-    git_info=$(git_prompt_info 2>/dev/null)
-    PROMPT="%F{yellow}%m%f %2~ ${git_info}»%b "
+    local branch gitinfo=""
+    branch=$(command git symbolic-ref --short HEAD 2>/dev/null) \
+      || branch=$(command git rev-parse --short HEAD 2>/dev/null)
+    if [[ -n "$branch" ]]; then
+      local dirty=""
+      [[ -n "$(command git status --porcelain 2>/dev/null)" ]] && dirty="%F{red}●%f"
+      gitinfo="%F{white}[%f${branch}${dirty}%F{white}]%f "
+    fi
+    PROMPT="%F{yellow}%m%f %2~ ${gitinfo}»%b "
   }
   add-zsh-hook precmd _ssh_prompt_precmd
 fi
