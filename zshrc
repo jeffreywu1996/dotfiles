@@ -94,8 +94,11 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # Show the server hostname in the prompt over SSH so it's clear which box you're on.
+# Write the full prompt explicitly rather than prepending to $PROMPT — capturing $PROMPT
+# via "..." is unreliable when the theme uses $(cmd) substitution (drops under some zsh builds).
+# This mirrors the minimal theme's own PROMPT with %m prepended.
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
-  PROMPT='%F{yellow}%m%f '"$PROMPT"
+  PROMPT='%F{yellow}%m%f %2~ $(vcs_status)»%b '
 fi
 
 # History: large, shared across sessions, written immediately.
