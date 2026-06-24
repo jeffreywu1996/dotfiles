@@ -30,6 +30,18 @@ INSTALL_CLAUDE_CODE=true             # Claude Code CLI -> ~/.local/bin/claude
 
 Each is also overridable per-run via env, e.g. `INSTALL_CLAUDE_CODE=false ./install.sh`.
 
+### Per-machine zsh customization
+
+`zshrc` is shared and symlinked into place, so anything you want on only one
+machine (extra aliases, PATH entries, prompt tweaks) shouldn't live in it —
+that'd force a merge on every `git pull`. Instead, put it in `~/.zshrc.local`,
+which `zshrc` sources at the very end if it exists. The file is outside the
+repo and is never touched by `install.sh` or updates.
+
+```sh
+echo "alias foo='echo bar'" >> ~/.zshrc.local   # lives only on this machine
+```
+
 ## Supported machines
 
 | Machine                | Support | Package manager        |

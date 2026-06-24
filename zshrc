@@ -225,3 +225,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # Added by Antigravity (mac-only paths; guarded so they no-op elsewhere)
 [ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 [ -d "$HOME/.antigravity-ide/antigravity-ide/bin" ] && export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+# Machine-local overrides — not in the repo, never touched by git pull/install.sh.
+# Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
