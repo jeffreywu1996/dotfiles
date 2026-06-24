@@ -93,6 +93,13 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+_venv_prompt_info() {
+  [[ -n "$VIRTUAL_ENV" ]] && echo "(${VIRTUAL_ENV:t}) "
+}
+
+setopt PROMPT_SUBST
+PROMPT='$(_venv_prompt_info)%2~ $(vcs_status)»%b '
+
 # Show the server hostname in the prompt over SSH so it's clear which box you're on.
 # We compute the git branch ourselves (synchronously) rather than using oh-my-zsh's
 # git_prompt_info: recent oh-my-zsh makes that function async (it only echoes a cache
@@ -110,7 +117,7 @@ if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
       [[ -n "$(command git status --porcelain 2>/dev/null)" ]] && dirty="%F{red}●%f"
       gitinfo="%F{white}[%f${branch}${dirty}%F{white}]%f "
     fi
-    PROMPT="%F{yellow}%m%f %2~ ${gitinfo}»%b "
+    PROMPT="$(_venv_prompt_info)%F{yellow}%m%f %2~ ${gitinfo}»%b "
   }
   add-zsh-hook precmd _ssh_prompt_precmd
 fi
