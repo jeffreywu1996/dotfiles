@@ -1,0 +1,10 @@
+# Setup go/hi #!>>HI<<!#
+source /etc/bash.bashrc.d/shell_history_forwarder.sh #!>>HI<<!#
+source /etc/bash.bashrc.d/analysis_aliases.sh
+
+alias pbcopy="~/osc52.sh"
+alias gemini='/google/bin/releases/gemini-cli/tools/gemini'
+alias jetski='/google/bin/releases/jetski-devs/tools/cli'
+# Google
+source /etc/bash_completion.d/hgd
+source /etc/bash_completion.d/g4d

@@ -49,6 +49,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank' " Added to highlight yanked text
 
 " Language Support
+" Consider using internal formatters instead of or alongside vim-prettier
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'posva/vim-vue'
 Plug 'sheerun/vim-polyglot'         " Added for better syntax support
@@ -173,16 +174,16 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Lightline
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'cocstatus', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead',
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ }
+            \ 'colorscheme': 'solarized',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'gitbranch', 'cocstatus', 'filename', 'modified' ] ]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'FugitiveHead',
+            \   'cocstatus': 'coc#status'
+            \ },
+            \ }
 
 " Whitespace
 let g:strip_whitespace_on_save = 1
@@ -202,31 +203,28 @@ highlight GitGutterChangeDelete ctermfg=4
 
 " Tab completion
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
 inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
 
 " => Auto Commands
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup vimrc_autocmds
-  autocmd!
-  " Set indent for specific filetypes
-  autocmd FileType python setlocal ts=4 sts=4 sw=4
-  autocmd FileType javascript,typescript,vue,html,css setlocal ts=2 sts=2 sw=2
+    autocmd!
 
-  " Strip whitespace on save
-  autocmd BufWritePre * StripWhitespace
+    " Strip whitespace on save
+    autocmd BufWritePre * StripWhitespace
 
-  " Return to last edit position when opening files
-  autocmd BufReadPost *
-       \ if line("'\"") > 0 && line("'\"") <= line("$") |
-       \   exe "normal! g`\"" |
-       \ endif
+    " Return to last edit position when opening files
+    autocmd BufReadPost *
+                \ if line("'\"") > 0 && line("'\"") <= line("$") |
+                \   exe "normal! g`\"" |
+                \ endif
 augroup END
 
 " Clipboard: OSC 52 for SSH/tmux (works over any connection without X11/pbcopy).
@@ -245,4 +243,8 @@ else
   else
     set clipboard=unnamedplus   " Linux / WSL
   endif
+endif
+
+if filereadable(expand("~/.vimrc.local"))
+    source ~/.vimrc.local
 endif
