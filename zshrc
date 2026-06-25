@@ -212,6 +212,9 @@ if command -v fd > /dev/null; then
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git --exclude node_modules'
   export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git --exclude node_modules'
 fi
+
+source <(fzf --zsh)
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
 
@@ -229,3 +232,4 @@ export PATH="$HOME/.local/bin:$PATH"
 # Machine-local overrides — not in the repo, never touched by git pull/install.sh.
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -61,12 +61,12 @@ install_packages() {
       info "Installing packages via apt"
       # noninteractive avoids tzdata/etc. prompts that hang an unattended/fresh box.
       export DEBIAN_FRONTEND=noninteractive
-      sudo -E apt-get update
+      sudo apt-get update
       # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
       # fzf is installed separately from GitHub (apt's version is too old for --zsh support).
-      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
+      sudo apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
         python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
-      sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      sudo apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
       ;;
     none)
       warn "Unsupported package manager (likely Synology/other)."
@@ -101,7 +101,7 @@ install_fzf() {
     armv7l)        arch="armv7" ;;
     *)
       warn "Unknown arch $(uname -m) — installing fzf from apt (may be old)"
-      sudo -E apt-get install -y --no-install-recommends fzf || true
+      sudo apt-get install -y --no-install-recommends fzf || true
       return 0
       ;;
   esac
@@ -112,7 +112,7 @@ install_fzf() {
     | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/') || true
   if [ -z "$latest" ]; then
     warn "Could not fetch latest fzf release — falling back to apt"
-    sudo -E apt-get install -y --no-install-recommends fzf || true
+    sudo apt-get install -y --no-install-recommends fzf || true
     return 0
   fi
   curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \
@@ -198,6 +198,16 @@ symlink_configs() {
   link "$BASE/vimrc"     "$HOME/.vimrc"
   link "$BASE/tmux.conf" "$HOME/.tmux.conf"
   link "$BASE/zshrc"     "$HOME/.zshrc"
+  
+  if [ -f "$BASE/vimrc.local" ]; then
+    link "$BASE/vimrc.local" "$HOME/.vimrc.local"
+  fi
+  if [ -f "$BASE/zshrc.local" ]; then
+    link "$BASE/zshrc.local" "$HOME/.zshrc.local"
+  fi
+  if [ -f "$BASE/tmux.conf.local" ]; then
+    link "$BASE/tmux.conf.local" "$HOME/.tmux.conf.local"
+  fi
 }
 
 # ---------------------------------------------------------------------------

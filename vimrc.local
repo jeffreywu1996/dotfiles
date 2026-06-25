@@ -1,0 +1,54 @@
+" => Google Base Vim Configuration
+" Sets up core paths, internal filetypes, and initializes Glug.
+source /usr/share/vim/google/google.vim
+
+" => Internal Google Plugins (Glug)
+" Piper and g4 integrations for version control
+Glug piper plugin[mappings]
+Glug g4
+
+" Blaze integration (e.g. ,bd to build/test targets)
+Glug blaze plugin[mappings]
+
+" Easy jumping between headers/source/BUILD files
+Glug relatedfiles plugin[mappings]
+
+" Google's internal formatter
+Glug codefmt-google
+
+augroup vimrc_google_autocmds
+  autocmd!
+  " Enable AutoFormatBuffer for supported languages using codefmt-google
+  autocmd FileType c,cpp,java,python,go,proto,bzl AutoFormatBuffer
+
+  " Set indent for specific filetypes - Google standards
+  autocmd FileType python setlocal ts=4 sts=4 sw=4
+  autocmd FileType javascript,typescript,vue,html,css setlocal ts=2 sts=2 sw=2
+  autocmd FileType go setlocal ts=2 sts=2 sw=2 noexpandtab
+  autocmd FileType cpp setlocal ts=2 sts=2 sw=2
+  autocmd FileType java setlocal ts=2 sts=2 sw=2
+  autocmd FileType proto setlocal ts=2 sts=2 sw=2
+augroup END
+
+" => CiderLSP configuration for coc.nvim
+" Since you already use coc.nvim in your main .vimrc, this configures it to 
+" use Google's CiderLSP for google3 development (providing AI autocomplete and semantic analysis)
+let g:coc_user_config = {
+\ 'languageserver': {
+\   'ciderlsp': {
+\     'command': '/google/bin/releases/cider/ciderlsp/ciderlsp',
+\     'args': [
+\       '--tooltag=coc-nvim',
+\       '--noforward_sync_responses'
+\     ],
+\     'filetypes': [
+\       'borg', 'bzl', 'c', 'cpp', 'gcl', 'go', 'java', 'javascript',
+\       'kotlin', 'proto', 'python', 'textpb', 'textproto', 'typescript'
+\     ],
+\     'enabled': v:true,
+\     'compose': {
+\       'enabled': v:true,
+\     },
+\   }
+\ }
+\}
