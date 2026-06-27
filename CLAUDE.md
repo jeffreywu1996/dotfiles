@@ -15,6 +15,10 @@ The configs (`vimrc`, `tmux.conf`, `zshrc`) are **symlinked** into `$HOME` by
 `git pull` alone updates a machine's configs (re-run `install.sh` only to pick up
 new tools/plugins).
 
+## Commit style
+
+Never add `Co-Authored-By` trailers to commit messages.
+
 ## Workflow rules
 
 - **Run `./test.sh` before every commit/push.** It's fast (<2s) and gates on
