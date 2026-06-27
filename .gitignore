@@ -1,3 +1,4 @@
-*.pyc
-.DS_Store
-*.old
+# Machine-local overrides — each box manages its own, not tracked in the repo.
+# The main configs source ~/.zshrc.local / ~/.vimrc.local / ~/.tmux.conf.local
+# if they exist; install.sh no longer symlinks these.
+*.local

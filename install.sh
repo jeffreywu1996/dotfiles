@@ -220,15 +220,6 @@ symlink_configs() {
   link "$BASE/tmux.conf" "$HOME/.tmux.conf"
   link "$BASE/zshrc"     "$HOME/.zshrc"
   
-  if [ -f "$BASE/vimrc.local" ]; then
-    link "$BASE/vimrc.local" "$HOME/.vimrc.local"
-  fi
-  if [ -f "$BASE/zshrc.local" ]; then
-    link "$BASE/zshrc.local" "$HOME/.zshrc.local"
-  fi
-  if [ -f "$BASE/tmux.conf.local" ]; then
-    link "$BASE/tmux.conf.local" "$HOME/.tmux.conf.local"
-  fi
 }
 
 # ---------------------------------------------------------------------------
