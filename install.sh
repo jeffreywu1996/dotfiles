@@ -44,6 +44,12 @@ case "$OS" in
   *)      PM="none" ;;
 esac
 
+# Homebrew's prefix isn't always /opt/homebrew. It can be /usr/local (Intel) or a
+# custom per-user location like ~/.homebrew on a shared Mac where another user owns
+# the system install. Resolved in install_packages once brew is on PATH; anything
+# needing a brew path (nvm, etc.) reads $BREW_PREFIX instead of hardcoding it.
+BREW_PREFIX=""
+
 # ---------------------------------------------------------------------------
 # 1. Packages
 # ---------------------------------------------------------------------------
@@ -54,8 +60,22 @@ install_packages() {
         info "Installing Homebrew"
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       fi
-      info "Installing packages via brew"
-      brew install git zsh tmux vim neovim fzf ripgrep fd bat eza zoxide curl python3 "${EXTRA_PACKAGES[@]}" || true
+      # Shared Macs: a second user may own the Homebrew prefix (e.g. /opt/homebrew
+      # owned by `es`). Running `brew install` as a non-owner errors out, and
+      # chown'ing it would break brew for the owner. Detect that and skip — the
+      # packages are already installed by whoever owns the prefix.
+      BREW_PREFIX="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
+      if [ -w "$BREW_PREFIX" ]; then
+        info "Installing packages via brew ($BREW_PREFIX)"
+        brew install git zsh tmux vim neovim fzf ripgrep fd bat eza zoxide curl python3 "${EXTRA_PACKAGES[@]}" || true
+      else
+        local owner
+        owner="$(stat -f '%Su' "$BREW_PREFIX" 2>/dev/null || echo 'another user')"
+        warn "Homebrew at $BREW_PREFIX is owned by '$owner', not $(whoami) — skipping 'brew install'."
+        warn "Running brew here would fail; don't chown it (that breaks brew for '$owner')."
+        warn "Packages are assumed already installed. If one is missing, either have '$owner'"
+        warn "run 'brew install <pkg>', or set up your own brew: git clone https://github.com/Homebrew/brew ~/.homebrew"
+      fi
       ;;
     apt)
       info "Installing packages via apt"
@@ -125,7 +145,8 @@ install_fzf() {
 # ---------------------------------------------------------------------------
 install_runtimes() {
   export NVM_DIR="$HOME/.nvm"
-  if [ ! -s "$NVM_DIR/nvm.sh" ] && [ ! -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
+  local brew_nvm="${BREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
+  if [ ! -s "$NVM_DIR/nvm.sh" ] && [ ! -s "$brew_nvm" ]; then
     info "Installing nvm"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
   fi
@@ -133,7 +154,7 @@ install_runtimes() {
   # shellcheck source=/dev/null
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
   # shellcheck source=/dev/null
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "$brew_nvm" ] && . "$brew_nvm"
   # .npmrc with a prefix/globalconfig conflicts with nvm's PATH management.
   # Remove those lines before calling nvm install to avoid the incompatibility warning.
   if [ -f "$HOME/.npmrc" ] && grep -qE '^(prefix|globalconfig)' "$HOME/.npmrc" 2>/dev/null; then

@@ -246,5 +246,5 @@ else
 endif
 
 if filereadable(expand("~/.vimrc.local"))
-    source ~/.vimrc.local
+    silent! source ~/.vimrc.local
 endif

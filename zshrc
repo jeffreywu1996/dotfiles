@@ -218,9 +218,11 @@ source <(fzf --zsh)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
 
-# nvm: source from Homebrew (Apple Silicon) or the default/manual install location
+# nvm: source from Homebrew or the default/manual install location. Use the
+# resolved Homebrew prefix ($HOMEBREW_PREFIX, set by `brew shellenv`) so a custom
+# install like ~/.homebrew works too; fall back to /opt/homebrew when unset.
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh" ] && source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -228,6 +230,32 @@ export PATH="$HOME/.local/bin:$PATH"
 # Added by Antigravity (mac-only paths; guarded so they no-op elsewhere)
 [ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 [ -d "$HOME/.antigravity-ide/antigravity-ide/bin" ] && export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+# Cross-machine clipboard via OSC 52.
+# `echo foo | pbcopy` reaches the clipboard of the terminal you're sitting at,
+# even from a box you've SSH'd into — tmux (set-clipboard on + allow-passthrough)
+# forwards the escape out to your local terminal. Native pbcopy/xclip/wl-copy are
+# preferred when you're physically at the machine.
+_osc52_copy() {
+  local b64
+  # base64 with no line wrapping (GNU wraps at 76 cols; tr strips either way).
+  b64="$(base64 | tr -d '\n')"
+  # Write to the controlling terminal so it works even if stdout is redirected.
+  printf '\033]52;c;%s\a' "$b64" > /dev/tty
+}
+if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
+  # Remote session: send the clipboard back to the local terminal, not the host.
+  pbcopy() { _osc52_copy; }
+elif ! command -v pbcopy >/dev/null 2>&1; then
+  # Local, no native pbcopy (i.e. not macOS): prefer a real tool, else OSC 52.
+  if command -v wl-copy >/dev/null 2>&1; then
+    pbcopy() { wl-copy; }
+  elif command -v xclip >/dev/null 2>&1; then
+    pbcopy() { xclip -selection clipboard; }
+  else
+    pbcopy() { _osc52_copy; }
+  fi
+fi
 
 # Machine-local overrides — not in the repo, never touched by git pull/install.sh.
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
