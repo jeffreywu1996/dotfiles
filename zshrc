@@ -261,3 +261,4 @@ fi
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
