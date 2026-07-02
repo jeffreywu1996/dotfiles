@@ -257,8 +257,29 @@ elif ! command -v pbcopy >/dev/null 2>&1; then
   fi
 fi
 
+# ── opencode ────────────────────────────────────────────────────────────
+# oc  → default opencode (primary account from auth.json)
+# occ → opencode with an alternate API key (second account)
+#       Key resolution: bw-secret → $OPENCODE_ALT_API_KEY → error.
+#       Set OPENCODE_ALT_API_KEY in ~/.zshrc.local or your secret manager.
+if command -v opencode >/dev/null 2>&1; then
+  alias oc='opencode'
+  occ() {
+    local alt_key=""
+    if command -v bw-secret >/dev/null 2>&1; then
+      alt_key="$(bw-secret get password opencode-go-alt-api-key 2>/dev/null)" || true
+    fi
+    alt_key="${alt_key:-${OPENCODE_ALT_API_KEY:-}}"
+    if [[ -z "$alt_key" ]]; then
+      echo "occ: no alternate key found (set OPENCODE_ALT_API_KEY or install bw-secret)" >&2
+      return 1
+    fi
+    OPENCODE_AUTH_CONTENT="{\"opencode-go\":{\"type\":\"api\",\"key\":\"${alt_key}\"}}" \
+      opencode "$@"
+  }
+fi
+
 # Machine-local overrides — not in the repo, never touched by git pull/install.sh.
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
