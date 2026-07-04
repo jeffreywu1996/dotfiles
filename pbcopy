@@ -1,0 +1,12 @@
+#!/bin/bash
+# Wrapper around pbcopy to support OSC 52 clipboard forwarding over SSH.
+# Created by Antigravity AI agent.
+
+if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_TTY" ]; then
+  # Read stdin, base64 encode it, and send OSC 52 sequence to the controlling terminal
+  b64=$(base64 | tr -d '\n')
+  printf '\033]52;c;%s\a' "$b64" > /dev/tty
+else
+  # Local session: run the real macOS pbcopy
+  /usr/bin/pbcopy "$@"
+fi

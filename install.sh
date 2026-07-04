@@ -219,7 +219,8 @@ symlink_configs() {
   link "$BASE/vimrc"     "$HOME/.vimrc"
   link "$BASE/tmux.conf" "$HOME/.tmux.conf"
   link "$BASE/zshrc"     "$HOME/.zshrc"
-  
+  mkdir -p "$HOME/bin"
+  link "$BASE/pbcopy"    "$HOME/bin/pbcopy"
 }
 
 # ---------------------------------------------------------------------------

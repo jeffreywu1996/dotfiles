@@ -261,3 +261,21 @@ fi
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# OpenClaw Completion
+[ -f "/Users/jeffreywu/.openclaw/completions/openclaw.zsh" ] && source "/Users/jeffreywu/.openclaw/completions/openclaw.zsh"
+
+# opencode
+export PATH=/Users/jeffreywu/.opencode/bin:$PATH
+export PATH="$HOME/bin:$PATH"
+
+# bun completions
+[ -s "/Users/jeffreywu/.bun/_bun" ] && source "/Users/jeffreywu/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/jeffreywu/.local/bin:$PATH"
