@@ -87,6 +87,10 @@ install_packages() {
       sudo apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
         python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
       sudo apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      mkdir -p "$HOME/.local/bin"
+      if command -v fdfind >/dev/null 2>&1 && [ ! -e "$HOME/.local/bin/fd" ]; then
+        ln -s "$(command -v fdfind)" "$HOME/.local/bin/fd"
+      fi
       ;;
     none)
       warn "Unsupported package manager (likely Synology/other)."
@@ -219,7 +223,12 @@ symlink_configs() {
   link "$BASE/vimrc"     "$HOME/.vimrc"
   link "$BASE/tmux.conf" "$HOME/.tmux.conf"
   link "$BASE/zshrc"     "$HOME/.zshrc"
-  
+
+  # Neovim compatibility: point nvim to the shared vimrc
+  mkdir -p "$HOME/.config/nvim"
+  if [ ! -f "$HOME/.config/nvim/init.vim" ] && [ ! -L "$HOME/.config/nvim/init.vim" ]; then
+    printf 'set runtimepath^=~/.vim runtimepath+=~/.vim/after\nlet &packpath=&runtimepath\nsource ~/.vimrc\n' > "$HOME/.config/nvim/init.vim"
+  fi
 }
 
 # ---------------------------------------------------------------------------

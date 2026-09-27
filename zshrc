@@ -82,8 +82,8 @@ ZSH_THEME="minimal"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-autosuggestions
   fzf-tab
+  zsh-autosuggestions
   docker
   docker-compose
   extract
@@ -138,6 +138,8 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down
 
 # User configuration
 
@@ -179,51 +181,72 @@ command -v bat >/dev/null && alias cat='bat --paging=never'
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
-autoload -U compinit && compinit
 
 Rg() {
-  local preview_script="$HOME/.vim/plugged/fzf.vim/bin/preview.sh"
   local preview_cmd
-  if [ -f "$preview_script" ]; then
-    preview_cmd="$preview_script {}"
-  elif command -v bat >/dev/null; then
-    preview_cmd='bat --color=always {}'
+  if command -v bat >/dev/null 2>&1; then
+    preview_cmd='bat --color=always --highlight-line {2} {1}'
   else
-    preview_cmd='cat {}'
+    preview_cmd='cat {1}'
   fi
-  local selected=$(
-    rg --column --line-number --no-heading --color=always --smart-case "$1" |
-      fzf --ansi --preview "$preview_cmd"
+  local selected
+  selected=$(
+    rg --column --line-number --no-heading --color=always --smart-case "$@" |
+      fzf --ansi --delimiter : --preview "$preview_cmd"
   )
-  [ -n "$selected" ] && ${EDITOR:-vim} "$selected"
+  if [[ -n "$selected" ]]; then
+    local file line
+    file=$(echo "$selected" | cut -d: -f1)
+    line=$(echo "$selected" | cut -d: -f2)
+    if [[ -n "$line" ]]; then
+      ${EDITOR:-vim} "$file" "+$line"
+    else
+      ${EDITOR:-vim} "$file"
+    fi
+  fi
 }
 
 # Switch tmux-sessions
 fs() {
   local session
-  session=$(tmux list-sessions -F "#{session_name}" | \
-    fzf --height 40% --reverse --query="$1" --select-1 --exit-0) &&
-  tmux switch-client -t "$session"
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | \
+    fzf --height 40% --reverse --query="$1" --select-1 --exit-0) || return
+  if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$session"
+  else
+    tmux attach-session -t "$session"
+  fi
 }
 
-
-if command -v fd > /dev/null; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude node_modules'
-  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git --exclude node_modules'
-  export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git --exclude node_modules'
+_fd_cmd=""
+if command -v fd >/dev/null 2>&1; then
+  _fd_cmd="fd"
+elif command -v fdfind >/dev/null 2>&1; then
+  _fd_cmd="fdfind"
 fi
+if [[ -n "$_fd_cmd" ]]; then
+  export FZF_DEFAULT_COMMAND="$_fd_cmd --type f --hidden --follow --exclude .git --exclude node_modules"
+  export FZF_ALT_C_COMMAND="$_fd_cmd --type d --hidden --follow --exclude .git --exclude node_modules"
+  export FZF_CTRL_T_COMMAND="$_fd_cmd --type f --type d --hidden --follow --exclude .git --exclude node_modules"
+fi
+unset _fd_cmd
 
-source <(fzf --zsh)
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+elif [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
 export PATH="/usr/local/sbin:$PATH"
 
 # nvm: source from Homebrew or the default/manual install location. Use the
 # resolved Homebrew prefix ($HOMEBREW_PREFIX, set by `brew shellenv`) so a custom
 # install like ~/.homebrew works too; fall back to /opt/homebrew when unset.
 export NVM_DIR="$HOME/.nvm"
-[ -s "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh" ] && source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+if [ -s "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh" ]; then
+  source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
+elif [ -s "$NVM_DIR/nvm.sh" ]; then
+  source "$NVM_DIR/nvm.sh"
+fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -241,7 +264,11 @@ _osc52_copy() {
   # base64 with no line wrapping (GNU wraps at 76 cols; tr strips either way).
   b64="$(base64 | tr -d '\n')"
   # Write to the controlling terminal so it works even if stdout is redirected.
-  printf '\033]52;c;%s\a' "$b64" > /dev/tty
+  if [[ -w /dev/tty ]]; then
+    printf '\033]52;c;%s\a' "$b64" > /dev/tty
+  else
+    printf '\033]52;c;%s\a' "$b64"
+  fi
 }
 if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
   # Remote session: send the clipboard back to the local terminal, not the host.
