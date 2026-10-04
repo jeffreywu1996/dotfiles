@@ -6,6 +6,9 @@
 
 " => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader = " "
+let maplocalleader = " "
+
 set nocompatible              " Use Vim settings, rather than Vi
 set encoding=utf-8           " Set default encoding
 set history=1000             " Increase command history
@@ -31,7 +34,7 @@ call plug#begin('~/.vim/plugged')
 
 " IDE Features
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -44,13 +47,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank' " Added to highlight yanked text
 
 " Language Support
-" Consider using internal formatters instead of or alongside vim-prettier
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'posva/vim-vue'
 Plug 'sheerun/vim-polyglot'         " Added for better syntax support
 
@@ -83,6 +84,9 @@ set laststatus=2          " Always show status line
 
 " => Theme Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('termguicolors')
+    set termguicolors
+endif
 set t_Co=256              " Enable 256 colors
 set background=dark       " Dark background
 silent! colorscheme solarized  " silent! so a fresh install (no plugins yet) doesn't abort
@@ -122,12 +126,6 @@ nnoremap <leader>x :x<CR>
 nnoremap <leader>z :u<CR>
 nnoremap <leader>wq :wq!<CR>
 
-" Better window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
 " Quick .vimrc edit
 nnoremap <leader>ve :edit $MYVIMRC<CR>
 nnoremap <leader>vs :source $MYVIMRC<CR>
@@ -162,7 +160,6 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-pyright',
-  \ 'coc-pairs',
   \ 'coc-snippets'
   \ ]
 
@@ -188,6 +185,7 @@ let g:lightline = {
 " Whitespace
 let g:strip_whitespace_on_save = 1
 let g:better_whitespace_enabled = 1
+let g:better_whitespace_filetypes_blacklist = ['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown']
 map <leader>l :ToggleWhitespace<CR>
 map <leader>ll :StripWhitespace<CR>
 
@@ -201,7 +199,7 @@ highlight GitGutterChange ctermfg=3
 highlight GitGutterDelete ctermfg=1
 highlight GitGutterChangeDelete ctermfg=4
 
-" Tab completion
+" Tab completion & confirmation
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
@@ -211,14 +209,23 @@ inoremap <silent><expr> <Tab>
             \ pumvisible() ? "\<C-n>" :
             \ <SID>check_back_space() ? "\<Tab>" :
             \ coc#refresh()
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Show documentation in preview window with K
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation() abort
+    if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+    else
+        call feedkeys('K', 'in')
+    endif
+endfunction
 
 " => Auto Commands
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup vimrc_autocmds
     autocmd!
-
-    " Strip whitespace on save
-    autocmd BufWritePre * StripWhitespace
 
     " Return to last edit position when opening files
     autocmd BufReadPost *
@@ -238,7 +245,7 @@ if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($TMUX)
         \   execute 'OSCYankRegister "' |
         \ endif
 else
-  if system('uname -s') =~# 'Darwin'
+  if has('mac') || has('macunix')
     set clipboard=unnamed       " macOS
   else
     set clipboard=unnamedplus   " Linux / WSL
