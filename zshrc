@@ -345,6 +345,16 @@ if command -v opencode >/dev/null 2>&1; then
   }
 fi
 
+# Optional tool paths & completions (guarded with $HOME so they no-op on other machines)
+[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
+if [ -d "$HOME/.bun" ]; then
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+  [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+fi
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
+
 # Machine-local overrides — not in the repo, never touched by git pull/install.sh.
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

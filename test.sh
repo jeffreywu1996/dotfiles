@@ -18,7 +18,7 @@ skip() { printf '\033[1;33mskip\033[0m  %s\n' "$*"; }
 
 echo "== shellcheck =="
 if command -v shellcheck >/dev/null; then
-  for f in install.sh install-minimal test.sh test-integration.sh; do
+  for f in install.sh install-minimal pbcopy test.sh test-integration.sh; do
     if shellcheck -x "$f"; then pass "$f"; else bad "$f"; fi
   done
 else
