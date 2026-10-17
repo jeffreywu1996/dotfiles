@@ -12,9 +12,18 @@
 # Keep PATH entries unique (no duplicates).
 typeset -U path PATH
 
+# Ensure Homebrew is on PATH if installed at standard locations (no-op if already loaded or on Linux).
+if [[ -z "${HOMEBREW_PREFIX:-}" ]]; then
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-command -v go >/dev/null && export PATH="$PATH:$(go env GOPATH)/bin"
+[[ -d "${GOPATH:-$HOME/go}/bin" ]] && export PATH="$PATH:${GOPATH:-$HOME/go}/bin"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -122,13 +131,17 @@ if [[ -n "$SSH_CONNECTION" || -n "$SSH_TTY" ]]; then
   add-zsh-hook precmd _ssh_prompt_precmd
 fi
 
-# History: large, shared across sessions, written immediately.
+# History: large, shared across sessions, deduplicated, written immediately.
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000
 SAVEHIST=$HISTSIZE
-setopt EXTENDED_HISTORY      # record timestamps
-setopt INC_APPEND_HISTORY   # append as you go, not just on exit
-setopt SHARE_HISTORY        # share history across running shells
+setopt EXTENDED_HISTORY       # record timestamps
+setopt INC_APPEND_HISTORY     # append as you go, not just on exit
+setopt SHARE_HISTORY          # share history across running shells
+setopt HIST_IGNORE_ALL_DUPS   # don't record duplicate commands
+setopt HIST_FIND_NO_DUPS      # don't show duplicates when searching
+setopt HIST_IGNORE_SPACE      # prefix command with space to keep it out of history
+setopt HIST_REDUCE_BLANKS     # strip superfluous whitespace
 
 # Preferred editor
 export EDITOR='vim'
@@ -176,8 +189,12 @@ alias gp='git push'
 
 # Modern CLI replacements, only if installed (names differ on Debian: bat=batcat, eza)
 command -v eza >/dev/null && alias ls='eza' && alias ll='eza -la' && alias tree='eza --tree'
-command -v batcat >/dev/null && alias bat='batcat'
-command -v bat >/dev/null && alias cat='bat --paging=never'
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat --paging=never'
+elif command -v batcat >/dev/null 2>&1; then
+  alias bat='batcat'
+  alias cat='batcat --paging=never'
+fi
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
@@ -186,6 +203,8 @@ Rg() {
   local preview_cmd
   if command -v bat >/dev/null 2>&1; then
     preview_cmd='bat --color=always --highlight-line {2} {1}'
+  elif command -v batcat >/dev/null 2>&1; then
+    preview_cmd='batcat --color=always --highlight-line {2} {1}'
   else
     preview_cmd='cat {1}'
   fi
@@ -238,15 +257,35 @@ elif [ -f ~/.fzf.zsh ]; then
 fi
 export PATH="/usr/local/sbin:$PATH"
 
-# nvm: source from Homebrew or the default/manual install location. Use the
-# resolved Homebrew prefix ($HOMEBREW_PREFIX, set by `brew shellenv`) so a custom
-# install like ~/.homebrew works too; fall back to /opt/homebrew when unset.
+# nvm: lazy-load nvm on first call; add active/default node directly to PATH for fast startup.
 export NVM_DIR="$HOME/.nvm"
-if [ -s "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh" ]; then
-  source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
-elif [ -s "$NVM_DIR/nvm.sh" ]; then
-  source "$NVM_DIR/nvm.sh"
+if [[ -d "$NVM_DIR/versions/node" ]]; then
+  _nvm_default_node=( "$NVM_DIR/versions/node"/*(N/om) )
+  if [[ -n "${_nvm_default_node[1]}" && -d "${_nvm_default_node[1]}/bin" ]]; then
+    export PATH="${_nvm_default_node[1]}/bin:$PATH"
+  fi
+  unset _nvm_default_node
 fi
+
+_load_nvm() {
+  unset -f nvm node npm npx corepack 2>/dev/null
+  local nvm_sh="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
+  [[ -s "$nvm_sh" ]] || nvm_sh="$NVM_DIR/nvm.sh"
+  [[ -s "$nvm_sh" ]] && source "$nvm_sh"
+  [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+}
+
+if ! command -v node >/dev/null 2>&1; then
+  for _cmd in node npm npx corepack; do
+    eval "$_cmd() { _load_nvm; $_cmd \"\$@\"; }"
+  done
+  unset _cmd
+fi
+
+nvm() {
+  _load_nvm
+  nvm "$@"
+}
 
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -309,4 +348,3 @@ fi
 # Machine-local overrides — not in the repo, never touched by git pull/install.sh.
 # Put per-box aliases, PATH additions, or prompt tweaks in ~/.zshrc.local.
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

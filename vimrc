@@ -28,6 +28,16 @@ set nobackup               " Disable backup files
 set nowritebackup          " Disable backup files while editing
 set fileformats=unix,dos   " Use Unix as standard file type
 
+" Persistent undo across sessions
+if has('persistent_undo')
+    let s:undodir = expand('~/.vim/undodir')
+    if !isdirectory(s:undodir)
+        call mkdir(s:undodir, 'p', 0700)
+    endif
+    let &undodir = s:undodir
+    set undofile
+endif
+
 " => Vim-Plug Plugin Manager
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
@@ -52,7 +62,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank' " Added to highlight yanked text
 
 " Language Support
-Plug 'posva/vim-vue'
 Plug 'sheerun/vim-polyglot'         " Added for better syntax support
 
 " UI Enhancement
@@ -62,6 +71,7 @@ Plug 'ojroques/vim-oscyank', {'branch': 'main'}  " OSC 52 clipboard over SSH/tmu
 
 " Color Schemes
 Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'chriskempson/vim-tomorrow-theme'
 
 call plug#end()
@@ -89,7 +99,8 @@ if has('termguicolors')
 endif
 set t_Co=256              " Enable 256 colors
 set background=dark       " Dark background
-silent! colorscheme solarized  " silent! so a fresh install (no plugins yet) doesn't abort
+silent! colorscheme solarized   " fallback if solarized8 isn't installed yet
+silent! colorscheme solarized8  " truecolor-native solarized; silent! so fresh install doesn't abort
 
 " Fix background color for tmux
 if &term =~ '256color'
@@ -108,6 +119,9 @@ set smartindent         " Smart indent
 set wrap               " Wrap lines
 set linebreak          " Break lines at word
 set textwidth=500      " Line wrap width
+if exists('+smoothscroll')
+    set smoothscroll   " Smooth screen-line scrolling on wrapped lines (Vim 9+ / Neovim)
+endif
 
 " => Search Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

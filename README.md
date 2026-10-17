@@ -75,7 +75,7 @@ just symlinks — install `git zsh tmux vim fzf ripgrep fd bat zoxide` yourself 
 
 ### Handy keys
 
-- tmux: `C-a` prefix · `=` / `-` split · `Alt-arrows` switch pane · `prefix r` reload ·
+- tmux: `C-a` prefix · `=` / `-` split · `Alt-arrows` switch pane · `prefix T` floating popup · `prefix S` sync panes · `prefix r` reload ·
   copy-mode `v` select, `y` yank to system clipboard.
 - vim: `<leader>t` files · `<leader>f` ripgrep · `<leader>n` NERDTree · `jk` escape ·
   `gd` go-to-definition.

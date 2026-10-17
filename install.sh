@@ -91,6 +91,9 @@ install_packages() {
       if command -v fdfind >/dev/null 2>&1 && [ ! -e "$HOME/.local/bin/fd" ]; then
         ln -s "$(command -v fdfind)" "$HOME/.local/bin/fd"
       fi
+      if command -v batcat >/dev/null 2>&1 && [ ! -e "$HOME/.local/bin/bat" ]; then
+        ln -s "$(command -v batcat)" "$HOME/.local/bin/bat"
+      fi
       ;;
     none)
       warn "Unsupported package manager (likely Synology/other)."
@@ -152,7 +155,7 @@ install_runtimes() {
   local brew_nvm="${BREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh"
   if [ ! -s "$NVM_DIR/nvm.sh" ] && [ ! -s "$brew_nvm" ]; then
     info "Installing nvm"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    PROFILE=/dev/null bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh)"
   fi
   # Load nvm into this shell so we can install node now.
   # shellcheck source=/dev/null
