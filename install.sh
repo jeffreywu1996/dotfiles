@@ -81,12 +81,12 @@ install_packages() {
       info "Installing packages via apt"
       # noninteractive avoids tzdata/etc. prompts that hang an unattended/fresh box.
       export DEBIAN_FRONTEND=noninteractive
-      sudo apt-get update
+      sudo -E apt-get update
       # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
       # fzf is installed separately from GitHub (apt's version is too old for --zsh support).
-      sudo apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
+      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
         python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
-      sudo apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
       mkdir -p "$HOME/.local/bin"
       if command -v fdfind >/dev/null 2>&1 && [ ! -e "$HOME/.local/bin/fd" ]; then
         ln -s "$(command -v fdfind)" "$HOME/.local/bin/fd"
@@ -128,7 +128,7 @@ install_fzf() {
     armv7l)        arch="armv7" ;;
     *)
       warn "Unknown arch $(uname -m) — installing fzf from apt (may be old)"
-      sudo apt-get install -y --no-install-recommends fzf || true
+      sudo -E apt-get install -y --no-install-recommends fzf || true
       return 0
       ;;
   esac
@@ -139,7 +139,7 @@ install_fzf() {
     | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/') || true
   if [ -z "$latest" ]; then
     warn "Could not fetch latest fzf release — falling back to apt"
-    sudo apt-get install -y --no-install-recommends fzf || true
+    sudo -E apt-get install -y --no-install-recommends fzf || true
     return 0
   fi
   curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \

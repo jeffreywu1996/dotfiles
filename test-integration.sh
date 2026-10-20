@@ -19,6 +19,8 @@ echo "== symlinks =="
 check_link "$HOME/.zshrc"
 check_link "$HOME/.vimrc"
 check_link "$HOME/.tmux.conf"
+check_link "$HOME/bin/pbcopy"
+if [ -f "$HOME/.config/nvim/init.vim" ]; then ok "file $HOME/.config/nvim/init.vim"; else bad "missing $HOME/.config/nvim/init.vim"; fi
 
 echo "== plugin managers / plugins =="
 check_dir "$HOME/.oh-my-zsh"
@@ -30,7 +32,7 @@ check_dir "$HOME/.tmux/plugins/tpm"
 if [ -f "$HOME/.vim/autoload/plug.vim" ]; then ok "vim-plug installed"; else bad "vim-plug missing"; fi
 
 echo "== core tools =="
-for c in git zsh tmux vim fzf rg; do check_cmd "$c"; done
+for c in git zsh tmux vim fzf rg fd bat; do check_cmd "$c"; done
 
 echo "== node (required by coc.nvim) =="
 # nvm installs node into the shell, not onto PATH for non-login shells, so source it.
@@ -41,12 +43,13 @@ check_cmd node
 
 echo "== zshrc actually loads under zsh =="
 # Run an interactive shell and confirm it survives sourcing zshrc by echoing a
-# sentinel. We check for the sentinel rather than the exit code: without a PTY
-# (as in this container), zle-based plugins emit a harmless "can't change option:
-# zle" warning whose non-zero status would otherwise leak through a bare `exit`.
-zsh_out="$(zsh -ic 'echo __ZSHRC_OK__' 2>&1)"
+# sentinel and resolving node on PATH via the fast-path glob. We check for the
+# sentinel rather than the exit code: without a PTY (as in this container),
+# zle-based plugins emit a harmless "can't change option: zle" warning whose
+# non-zero status would otherwise leak through a bare `exit`.
+zsh_out="$(zsh -ic 'command -v node >/dev/null && echo __ZSHRC_OK__' 2>&1)"
 if printf '%s' "$zsh_out" | grep -q '__ZSHRC_OK__'; then
-  ok "interactive zsh starts"
+  ok "interactive zsh starts with node on PATH"
 else
   bad "interactive zsh failed: $zsh_out"
 fi

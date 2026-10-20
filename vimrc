@@ -99,8 +99,11 @@ if has('termguicolors')
 endif
 set t_Co=256              " Enable 256 colors
 set background=dark       " Dark background
-silent! colorscheme solarized   " fallback if solarized8 isn't installed yet
-silent! colorscheme solarized8  " truecolor-native solarized; silent! so fresh install doesn't abort
+try
+    colorscheme solarized8  " truecolor-native solarized
+catch /^Vim\%((\a\+)\)\=:E185/
+    silent! colorscheme solarized  " fallback if solarized8 isn't installed yet
+endtry
 
 " Fix background color for tmux
 if &term =~ '256color'
