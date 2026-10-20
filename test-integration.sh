@@ -32,6 +32,8 @@ check_dir "$HOME/.tmux/plugins/tpm"
 if [ -f "$HOME/.vim/autoload/plug.vim" ]; then ok "vim-plug installed"; else bad "vim-plug missing"; fi
 
 echo "== core tools =="
+# Debian's fd/bat symlinks live in ~/.local/bin (added to PATH by zshrc, not non-login bash).
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 for c in git zsh tmux vim fzf rg fd bat; do check_cmd "$c"; done
 
 echo "== node (required by coc.nvim) =="
