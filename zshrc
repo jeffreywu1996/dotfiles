@@ -23,7 +23,10 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+[[ -d /usr/local/go/bin ]] && export PATH="/usr/local/go/bin:$PATH"
 [[ -d "${GOPATH:-$HOME/go}/bin" ]] && export PATH="$PATH:${GOPATH:-$HOME/go}/bin"
+[[ -d "$HOME/.fzf/bin" ]] && export PATH="$PATH:$HOME/.fzf/bin"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -186,6 +189,7 @@ alias gitb='git branch --sort=committerdate'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
+[[ "$(uname -s)" == "Linux" ]] && alias clearcache='sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches'
 
 # Modern CLI replacements, only if installed (names differ on Debian: bat=batcat, eza)
 command -v eza >/dev/null && alias ls='eza' && alias ll='eza -la' && alias tree='eza --tree'

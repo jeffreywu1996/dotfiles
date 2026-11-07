@@ -251,9 +251,9 @@ augroup vimrc_autocmds
                 \ endif
 augroup END
 
-" Clipboard: OSC 52 for SSH/tmux (works over any connection without X11/pbcopy).
-" On a plain local terminal the system clipboard is used instead.
-if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($TMUX)
+" Clipboard: OSC 52 for SSH/tmux (or when vim lacks +clipboard support).
+" On a plain local terminal with +clipboard, the system clipboard is used instead.
+if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($TMUX) || !has('clipboard')
   let g:oscyank_term = 'default'
   " Copy to the local clipboard only on an explicit yank (y) to the unnamed
   " register — not on deletes/changes, so dd etc. don't clobber your clipboard.

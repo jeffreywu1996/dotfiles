@@ -10,6 +10,7 @@
 set -euo pipefail
 
 BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.fzf/bin:$PATH"
 
 # Git identity used when not already configured.
 GIT_NAME="Jeffrey Wu"
@@ -78,15 +79,20 @@ install_packages() {
       fi
       ;;
     apt)
-      info "Installing packages via apt"
-      # noninteractive avoids tzdata/etc. prompts that hang an unattended/fresh box.
-      export DEBIAN_FRONTEND=noninteractive
-      sudo -E apt-get update
-      # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
-      # fzf is installed separately from GitHub (apt's version is too old for --zsh support).
-      sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
-        python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
-      sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      if sudo -n true 2>/dev/null || [ -t 0 ]; then
+        info "Installing packages via apt"
+        # noninteractive avoids tzdata/etc. prompts that hang an unattended/fresh box.
+        export DEBIAN_FRONTEND=noninteractive
+        sudo -E apt-get update || warn "apt-get update reported an issue"
+        # bat ships as batcat, fd as fd-find on Debian/Ubuntu; eza may be unavailable on older releases.
+        # fzf is installed separately from GitHub (apt's version is too old for --zsh support).
+        sudo -E apt-get install -y --no-install-recommends git zsh tmux vim neovim ripgrep fd-find bat zoxide curl \
+          python3 python3-pip "${EXTRA_PACKAGES[@]}" || true
+        sudo -E apt-get install -y eza 2>/dev/null || warn "eza not in apt repos; install manually if wanted"
+      else
+        warn "Non-interactive shell without passwordless sudo — skipping apt-get install."
+        warn "Run './install.sh' in an interactive terminal if OS packages are missing."
+      fi
       mkdir -p "$HOME/.local/bin"
       if command -v fdfind >/dev/null 2>&1 && [ ! -e "$HOME/.local/bin/fd" ]; then
         ln -s "$(command -v fdfind)" "$HOME/.local/bin/fd"
@@ -142,9 +148,16 @@ install_fzf() {
     sudo -E apt-get install -y --no-install-recommends fzf || true
     return 0
   fi
-  curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \
-    | sudo tar -xz -C /usr/local/bin fzf \
-    || warn "fzf GitHub install failed; run: sudo apt-get install fzf"
+  if sudo -n true 2>/dev/null || [ -t 0 ]; then
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \
+      | sudo tar -xz -C /usr/local/bin fzf \
+      || warn "fzf GitHub install failed; run: sudo apt-get install fzf"
+  else
+    mkdir -p "$HOME/.local/bin"
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${latest}/fzf-${latest}-linux_${arch}.tar.gz" \
+      | tar -xz -C "$HOME/.local/bin" fzf \
+      || warn "fzf GitHub install to ~/.local/bin failed"
+  fi
 }
 
 # ---------------------------------------------------------------------------
@@ -241,7 +254,7 @@ symlink_configs() {
 # ---------------------------------------------------------------------------
 install_plugins() {
   info "Installing vim plugins"
-  vim +PlugInstall +qall </dev/null || warn "vim +PlugInstall reported an issue"
+  vim +PlugClean! +PlugInstall +qall </dev/null || warn "vim +PlugInstall reported an issue"
   info "Installing tmux plugins"
   # tpm normally gets this from a running tmux server; set it for headless install.
   TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins" \
@@ -252,12 +265,11 @@ install_plugins() {
 # 6. Git identity (only if unset)
 # ---------------------------------------------------------------------------
 setup_git() {
-  git config --global user.name  >/dev/null 2>&1 || git config --global user.name  "$GIT_NAME"
-  git config --global user.email >/dev/null 2>&1 || git config --global user.email "$GIT_EMAIL"
-  # Sensible defaults (set unconditionally; harmless to re-apply)
-  git config --global core.editor "vim"
-  git config --global init.defaultBranch "main"
-  git config --global pull.rebase false
+  git config --global user.name          >/dev/null 2>&1 || git config --global user.name          "$GIT_NAME"
+  git config --global user.email         >/dev/null 2>&1 || git config --global user.email         "$GIT_EMAIL"
+  git config --global core.editor        >/dev/null 2>&1 || git config --global core.editor        "vim"
+  git config --global init.defaultBranch >/dev/null 2>&1 || git config --global init.defaultBranch "main"
+  git config --global pull.rebase        >/dev/null 2>&1 || git config --global pull.rebase        false
 }
 
 # ---------------------------------------------------------------------------
